@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:word/local_notice_service.dart';
 import 'package:word/word.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalNoticeService().setup();
   runApp(const MyApp());
 }
 
