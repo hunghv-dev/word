@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:word/notification.dart';
@@ -25,6 +26,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int id = 0;
 
+  final StreamController<ReceivedNotification>
+      didReceiveLocalNotificationStream =
+      StreamController<ReceivedNotification>.broadcast();
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +42,7 @@ class _HomePageState extends State<HomePage> {
         .listen((ReceivedNotification receivedNotification) async {
       await showDialog(
         context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
+        builder: (BuildContext context) => AlertDialog(
           title: receivedNotification.title != null
               ? Text(receivedNotification.title!)
               : null,
