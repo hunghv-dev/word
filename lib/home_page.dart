@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:word/notification.dart';
 import 'package:word/received_notification.dart';
 import 'package:word/second_page.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
+
+import 'all_csv_files_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -126,6 +130,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               TextButton(
+                child: const Text('Load all csv file'),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (_) => AllCsvFilesScreen()))
+                      .then((path) => loadingCsvData(path));
+                },
+              ),
+              TextButton(
                 child: const Text('Show notification'),
                 onPressed: () async {
                   await _showNotification();
@@ -153,5 +166,15 @@ class _HomePageState extends State<HomePage> {
       'plain body',
       notificationDetails,
     );
+  }
+
+  Future<List<List<dynamic>>> loadingCsvData(String path) async {
+    final csvFile = File(path).openRead();
+    return await csvFile
+        .transform(utf8.decoder)
+        .transform(
+          const CsvToListConverter(),
+        )
+        .toList();
   }
 }
