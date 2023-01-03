@@ -95,18 +95,25 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(
                 isTurnOnNotification ? 'Notification On' : 'Notification Off',
-                style: TextStyle(color: isTurnOnNotification ? Colors.blue : Colors.grey),
               ),
               Switch(
                 value: isTurnOnNotification,
-                onChanged: (value) =>
-                    setState(() => isTurnOnNotification = value),
+                onChanged: (isTurnOn) async {
+                  if (isTurnOn) {
+                    // await _showNotification();
+                  }
+                  setState(() => isTurnOnNotification = isTurnOn);
+                },
               ),
             ],
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           elevation: 0,
+          titleTextStyle: TextStyle(
+            fontSize: 17,
+            color: isTurnOnNotification ? Colors.blue : Colors.grey,
+          ),
         ),
         body: Center(
           child: Column(
@@ -139,12 +146,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-              // TextButton(
-              //   child: const Text('Show notification'),
-              //   onPressed: () async {
-              //     await _showNotification();
-              //   },
-              // ),
             ],
           ),
         ),
