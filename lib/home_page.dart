@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:word/notification.dart';
 import 'package:word/received_notification.dart';
 import 'package:word/second_page.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -25,6 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int id = 0;
+  List<List<dynamic>> _data = [];
 
   final StreamController<ReceivedNotification>
       didReceiveLocalNotificationStream =
@@ -35,6 +38,15 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
+    _loadCSV();
+  }
+
+  Future _loadCSV() async {
+    final rawData = await rootBundle.loadString('assets/words.csv');
+    List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
+    setState(() {
+      _data = listData;
+    });
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
@@ -72,11 +84,54 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: TextButton(
-            child: const Text('Show notification'),
-            onPressed: () async {
-              await _showNotification();
-            },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _data.length,
+                  itemBuilder: (_, index) {
+                    return Card(
+                      color: index == 0 ? Colors.blue : Colors.white,
+                      elevation: 0.1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                _data[index][0].toString(),
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Text(
+                                _data[index][1],
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Text(
+                                _data[index][2],
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              TextButton(
+                child: const Text('Show notification'),
+                onPressed: () async {
+                  await _showNotification();
+                },
+              ),
+            ],
           ),
         ),
       );
