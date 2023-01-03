@@ -2,15 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:word/notification.dart';
 import 'package:word/received_notification.dart';
 import 'package:word/second_page.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-
-import 'all_csv_files_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -42,15 +40,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
-    _loadCSV();
-  }
-
-  Future _loadCSV() async {
-    final rawData = await rootBundle.loadString('assets/words.csv');
-    List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
-    setState(() {
-      _data = listData;
-    });
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
@@ -130,20 +119,23 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               TextButton(
-                child: const Text('Load all csv file'),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (_) => AllCsvFilesScreen()))
-                      .then((path) => loadingCsvData(path));
-                },
-              ),
-              TextButton(
-                child: const Text('Show notification'),
+                child: const Text('Load csv file'),
                 onPressed: () async {
-                  await _showNotification();
+                  final path = await loadCsvFromStorage();
+                  if(path != null){
+                    List<List<dynamic>> listData = await loadingCsvData(path);
+                    setState(() {
+                      _data = listData;
+                    });
+                  }
                 },
               ),
+              // TextButton(
+              //   child: const Text('Show notification'),
+              //   onPressed: () async {
+              //     await _showNotification();
+              //   },
+              // ),
             ],
           ),
         ),
@@ -176,5 +168,13 @@ class _HomePageState extends State<HomePage> {
           const CsvToListConverter(),
         )
         .toList();
+  }
+
+  Future<String?> loadCsvFromStorage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowedExtensions: ['csv'],
+      type: FileType.custom,
+    );
+    return result?.files.first.path;
   }
 }
