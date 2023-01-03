@@ -5,6 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:word/notification.dart';
 import 'package:word/received_notification.dart';
 import 'package:word/second_page.dart';
@@ -29,6 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int id = 0;
+  bool isTurnOnNotification = false;
   List<List<dynamic>> _data = [];
 
   final StreamController<ReceivedNotification>
@@ -40,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
+    _loadPathFromSharedPreferences();
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
@@ -67,6 +70,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _loadCsv() async {
+    final path = await _loadCsvFromStorage();
+    if (path == null) return;
+    await _savePathToSharedPreferences(path);
+    List<List<dynamic>> listData = await _loadingCsvData(path);
+    setState(() {
+      _data = listData;
+    });
+  }
+
   @override
   void dispose() {
     didReceiveLocalNotificationStream.close();
@@ -76,6 +89,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isTurnOnNotification ? 'Notification On' : 'Notification Off',
+                style: TextStyle(color: isTurnOnNotification ? Colors.blue : Colors.grey),
+              ),
+              Switch(
+                value: isTurnOnNotification,
+                onChanged: (value) =>
+                    setState(() => isTurnOnNotification = value),
+              ),
+            ],
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         body: Center(
           child: Column(
             children: [
@@ -83,52 +115,29 @@ class _HomePageState extends State<HomePage> {
                 child: ListView.builder(
                   itemCount: _data.length,
                   itemBuilder: (_, index) {
-                    return Card(
-                      color: index == 0 ? Colors.blue : Colors.white,
-                      elevation: 0.1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                _data[index][0].toString(),
-                                style: const TextStyle(fontSize: 15),
-                              ),
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              _data[index][0],
+                              style: const TextStyle(fontSize: 15),
                             ),
-                            Expanded(
-                              flex: 5,
-                              child: Text(
-                                _data[index][1],
-                                style: const TextStyle(fontSize: 15),
-                              ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              _data[index][1],
+                              style: const TextStyle(fontSize: 15),
                             ),
-                            Expanded(
-                              flex: 5,
-                              child: Text(
-                                _data[index][2],
-                                style: const TextStyle(fontSize: 15),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
                 ),
-              ),
-              TextButton(
-                child: const Text('Load csv file'),
-                onPressed: () async {
-                  final path = await loadCsvFromStorage();
-                  if(path != null){
-                    List<List<dynamic>> listData = await loadingCsvData(path);
-                    setState(() {
-                      _data = listData;
-                    });
-                  }
-                },
               ),
               // TextButton(
               //   child: const Text('Show notification'),
@@ -137,6 +146,12 @@ class _HomePageState extends State<HomePage> {
               //   },
               // ),
             ],
+          ),
+        ),
+        floatingActionButton: CircleAvatar(
+          child: IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _loadCsv,
           ),
         ),
       );
@@ -160,7 +175,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<List<List<dynamic>>> loadingCsvData(String path) async {
+  Future<List<List<dynamic>>> _loadingCsvData(String path) async {
     final csvFile = File(path).openRead();
     return await csvFile
         .transform(utf8.decoder)
@@ -170,11 +185,26 @@ class _HomePageState extends State<HomePage> {
         .toList();
   }
 
-  Future<String?> loadCsvFromStorage() async {
+  Future<String?> _loadCsvFromStorage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowedExtensions: ['csv'],
       type: FileType.custom,
     );
     return result?.files.first.path;
+  }
+
+  Future _loadPathFromSharedPreferences() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final path = sharedPreferences.getString('path');
+    if (path == null) return;
+    List<List<dynamic>> listData = await _loadingCsvData(path);
+    setState(() {
+      _data = listData;
+    });
+  }
+
+  Future _savePathToSharedPreferences(String path) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('path', path);
   }
 }
