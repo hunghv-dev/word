@@ -55,7 +55,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   void _onClearCSVFileEvent(event, emit) async {
     await _clearPathToSharedPreferences();
-    emit(state.copyWith(wordList: []));
+    emit(state.copyWith(wordList: [],isWordRemind: false));
   }
 
   void _onTurnWordRemindEvent(event, emit) async {
