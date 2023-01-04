@@ -1,77 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
-import 'package:word/received_notification.dart';
-import 'package:word/second_page.dart';
-
-import 'app.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage(
-    this.notificationAppLaunchDetails, {
+  const HomePage({
     Key? key,
   }) : super(key: key);
 
   static const String routeName = '/';
-
-  final NotificationAppLaunchDetails? notificationAppLaunchDetails;
-
-  bool get didNotificationLaunchApp =>
-      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int id = 0;
   bool isTurnOnNotification = false;
   late WordRemindBloc _bloc;
-
-  final StreamController<ReceivedNotification>
-      didReceiveLocalNotificationStream =
-      StreamController<ReceivedNotification>.broadcast();
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read<WordRemindBloc>()..add(LoadCSVFileEvent());
-    _configureDidReceiveLocalNotificationSubject();
-    _configureSelectNotificationSubject();
-  }
-
-  void _configureDidReceiveLocalNotificationSubject() {
-    didReceiveLocalNotificationStream.stream
-        .listen((ReceivedNotification receivedNotification) async {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: receivedNotification.title != null
-              ? Text(receivedNotification.title!)
-              : null,
-          content: receivedNotification.body != null
-              ? Text(receivedNotification.body!)
-              : null,
-        ),
-      );
-    });
-  }
-
-  void _configureSelectNotificationSubject() {
-    selectNotificationStream.stream.listen((_) async {
-      await Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (BuildContext context) => const SecondPage(),
-      ));
-    });
   }
 
   @override
   void dispose() {
-    didReceiveLocalNotificationStream.close();
-    selectNotificationStream.close();
     super.dispose();
   }
 
@@ -156,23 +110,4 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
-
-  Future<void> _showNotification() async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      channelDescription: 'your channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-      id++,
-      'plain title',
-      'plain body',
-      notificationDetails,
-    );
-  }
 }
