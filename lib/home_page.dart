@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:csv/csv.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word/notification.dart';
+import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/received_notification.dart';
 import 'package:word/second_page.dart';
-import 'dart:convert';
+
+import 'app.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -31,7 +29,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int id = 0;
   bool isTurnOnNotification = false;
-  List<List<dynamic>> _data = [];
+  late WordRemindBloc _bloc;
 
   final StreamController<ReceivedNotification>
       didReceiveLocalNotificationStream =
@@ -40,9 +38,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _bloc = context.read<WordRemindBloc>()..add(LoadCSVFileEvent());
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
-    _loadPathFromSharedPreferences();
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
@@ -70,16 +68,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _loadCsv() async {
-    final path = await _loadCsvFromStorage();
-    if (path == null) return;
-    await _savePathToSharedPreferences(path);
-    List<List<dynamic>> listData = await _loadingCsvData(path);
-    setState(() {
-      _data = listData;
-    });
-  }
-
   @override
   void dispose() {
     didReceiveLocalNotificationStream.close();
@@ -88,71 +76,83 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                isTurnOnNotification ? 'Notification On' : 'Notification Off',
-              ),
-              Switch(
-                value: isTurnOnNotification,
-                onChanged: (isTurnOn) async {
-                  if (isTurnOn) {
-                    // await _showNotification();
-                  }
-                  setState(() => isTurnOnNotification = isTurnOn);
-                },
-              ),
-            ],
+  Widget build(BuildContext context) =>
+      BlocListener<WordRemindBloc, WordRemindState>(
+        listener: (context, state) {
+          if (!state.readFilePermission) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                    'Please allow Files and media permission for pick files')));
+          }
+        },
+        child: Scaffold(
+          body: BlocBuilder<WordRemindBloc, WordRemindState>(
+            builder: (context, state) {
+              final wordList = state.wordList;
+              if (wordList.isEmpty) {
+                return Center(
+                  child: FloatingActionButton.large(
+                    onPressed: () => _bloc.add(PickCSVFileEvent()),
+                    backgroundColor: Colors.grey.shade400,
+                    child: const Icon(
+                      Icons.add,
+                      size: 50,
+                    ),
+                  ),
+                );
+              }
+              return Stack(
+                children: [
+                  ListView.builder(
+                    itemCount: wordList.length,
+                    itemBuilder: (_, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: wordList[index]
+                              .map(
+                                (word) => Expanded(
+                                  child: Text(
+                                    word.toString(),
+                                    style: const TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    child: BlocBuilder<WordRemindBloc, WordRemindState>(
+                      builder: (context, state) {
+                        return FloatingActionButton(
+                          onPressed: () => _bloc.add(TurnWordRemindEvent()),
+                          backgroundColor: state.isWordRemind
+                              ? Colors.green
+                              : Colors.grey.shade400,
+                          child: const Icon(Icons.add_alert_outlined, size: 30),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          titleTextStyle: TextStyle(
-            fontSize: 17,
-            color: isTurnOnNotification ? Colors.blue : Colors.grey,
-          ),
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _data.length,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              _data[index][0],
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              _data[index][1],
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: CircleAvatar(
-          child: IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _loadCsv,
+          floatingActionButton: BlocBuilder<WordRemindBloc, WordRemindState>(
+            builder: (context, state) {
+              if (state.wordList.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return FloatingActionButton.small(
+                  onPressed: () => _bloc.add(ClearCSVFileEvent()),
+                  backgroundColor: Colors.red,
+                  child: const Icon(Icons.delete_forever));
+            },
           ),
         ),
       );
@@ -174,38 +174,5 @@ class _HomePageState extends State<HomePage> {
       'plain body',
       notificationDetails,
     );
-  }
-
-  Future<List<List<dynamic>>> _loadingCsvData(String path) async {
-    final csvFile = File(path).openRead();
-    return await csvFile
-        .transform(utf8.decoder)
-        .transform(
-          const CsvToListConverter(),
-        )
-        .toList();
-  }
-
-  Future<String?> _loadCsvFromStorage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['csv'],
-      type: FileType.custom,
-    );
-    return result?.files.first.path;
-  }
-
-  Future _loadPathFromSharedPreferences() async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    final path = sharedPreferences.getString('path');
-    if (path == null) return;
-    List<List<dynamic>> listData = await _loadingCsvData(path);
-    setState(() {
-      _data = listData;
-    });
-  }
-
-  Future _savePathToSharedPreferences(String path) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('path', path);
   }
 }

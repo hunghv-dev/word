@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/home_page.dart';
 import 'package:word/second_page.dart';
 
@@ -30,13 +32,16 @@ Future<void> main() async {
     },
   );
   runApp(
-    MaterialApp(
-      initialRoute: HomePage.routeName,
-      routes: <String, WidgetBuilder>{
-        HomePage.routeName: (_) => HomePage(notificationAppLaunchDetails),
-        SecondPage.routeName: (_) => const SecondPage()
-      },
-      debugShowCheckedModeBanner: false,
+    BlocProvider(
+      create: (context) => WordRemindBloc(),
+      child: MaterialApp(
+        initialRoute: HomePage.routeName,
+        routes: <String, WidgetBuilder>{
+          HomePage.routeName: (_) => HomePage(notificationAppLaunchDetails),
+          SecondPage.routeName: (_) => const SecondPage()
+        },
+        debugShowCheckedModeBanner: false,
+      ),
     ),
   );
 }
