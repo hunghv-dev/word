@@ -88,6 +88,9 @@ class _HomePageState extends State<HomePage> {
                               children: wordList[index]
                                   .map(
                                     (word) => Expanded(
+                                      flex: wordList[index].indexOf(word) == 0
+                                          ? 2
+                                          : 3,
                                       child: Text(
                                         word.toString(),
                                         style: TextStyle(

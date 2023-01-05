@@ -126,9 +126,9 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   Future<void> _showNotification(List<dynamic> word) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      channelDescription: 'your channel description',
+      'word_remind_change_id',
+      'word_remind_change_name',
+      channelDescription: 'word_remind_change_description',
       importance: Importance.max,
       priority: Priority.max,
     );
