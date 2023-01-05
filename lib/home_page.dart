@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                             decoration: isRemindWord
                                 ? BoxDecoration(
                                     border: Border.all(
-                                      width: 1,
+                                      width: 2,
                                       color: Colors.green,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
