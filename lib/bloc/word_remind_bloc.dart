@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:word/app.dart';
 
 part 'word_remind_event.dart';
+
 part 'word_remind_state.dart';
 
 class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
@@ -24,7 +25,13 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<TurnWordRemindEvent>(_onTurnWordRemindEvent);
   }
 
-  int id = 0;
+  int _id = 0;
+  Timer? _timer;
+
+  List<dynamic> get randomWord {
+    final randomIndex = Random().nextInt(state.wordList.length);
+    return state.wordList[randomIndex];
+  }
 
   void _onLoadCSVFileEvent(event, emit) async {
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -54,16 +61,22 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   }
 
   void _onClearCSVFileEvent(event, emit) async {
+    _timer?.cancel();
     await _clearPathToSharedPreferences();
-    emit(state.copyWith(wordList: [],isWordRemind: false));
+    emit(state.copyWith(wordList: [], isWordRemind: false));
   }
 
   void _onTurnWordRemindEvent(event, emit) async {
     final wordRemindStatus = !state.isWordRemind;
     emit(state.copyWith(isWordRemind: wordRemindStatus));
-    if(wordRemindStatus){
-      final randomIndex = Random().nextInt(state.wordList.length);
-      _showNotification(state.wordList[randomIndex]);
+    if (wordRemindStatus) {
+      // _timer = Timer.periodic(
+      //     const Duration(seconds: 5), (_) => _showNotification(randomWord));
+      await _cancelNotifications();
+      await _showNotification(randomWord);
+    } else {
+      _timer?.cancel();
+      await _cancelNotifications();
     }
   }
 
@@ -78,7 +91,12 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   }
 
   Future<List<List<dynamic>>> _loadingCsvData(String path) async {
-    final csvFile = File(path).openRead();
+    final file = File(path);
+    final isFileExists = await file.exists();
+    if (!isFileExists) {
+      return [];
+    }
+    final csvFile = file.openRead();
     return await csvFile
         .transform(utf8.decoder)
         .transform(
@@ -89,20 +107,24 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   Future<void> _showNotification(List<dynamic> word) async {
     const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your channel id',
       'your channel name',
       channelDescription: 'your channel description',
       importance: Importance.max,
-      priority: Priority.high,
+      priority: Priority.max,
     );
     const NotificationDetails notificationDetails =
-    NotificationDetails(android: androidNotificationDetails);
+        NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
-      id++,
+      _id++,
       word[0],
       word[1],
       notificationDetails,
     );
+  }
+
+  Future<void> _cancelNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }

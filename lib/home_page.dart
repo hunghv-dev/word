@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
@@ -61,45 +60,48 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }
-                return Stack(
-                  children: [
-                    ListView.builder(
-                      itemCount: wordList.length,
-                      itemBuilder: (_, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: wordList[index]
-                                .map(
-                                  (word) => Expanded(
-                                    child: Text(
-                                      word.toString(),
-                                      style: const TextStyle(fontSize: 15),
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Stack(
+                    children: [
+                      ListView.builder(
+                        itemCount: wordList.length,
+                        itemBuilder: (_, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              children: wordList[index]
+                                  .map(
+                                    (word) => Expanded(
+                                      child: Text(
+                                        word.toString(),
+                                        style: const TextStyle(fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        );
-                      },
-                    ),
-                    Positioned(
-                      bottom: 50,
-                      left: 0,
-                      right: 0,
-                      child: BlocBuilder<WordRemindBloc, WordRemindState>(
-                        builder: (context, state) {
-                          return FloatingActionButton(
-                            onPressed: () => _bloc.add(TurnWordRemindEvent()),
-                            backgroundColor: state.isWordRemind
-                                ? Colors.green
-                                : Colors.grey.shade400,
-                            child: const Icon(Icons.add_alert_outlined, size: 30),
+                                  )
+                                  .toList(),
+                            ),
                           );
                         },
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        bottom: 50,
+                        left: 0,
+                        right: 0,
+                        child: BlocBuilder<WordRemindBloc, WordRemindState>(
+                          builder: (context, state) {
+                            return FloatingActionButton(
+                              onPressed: () => _bloc.add(TurnWordRemindEvent()),
+                              backgroundColor: state.isWordRemind
+                                  ? Colors.green
+                                  : Colors.grey.shade400,
+                              child: const Icon(Icons.add_alert_outlined, size: 30),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
