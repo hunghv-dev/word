@@ -12,3 +12,5 @@ class ClearCSVFileEvent extends WordRemindEvent {}
 class TurnWordRemindEvent extends WordRemindEvent {}
 
 class UpdateWordRemindEvent extends WordRemindEvent {}
+
+class ChangeTimerPeriodEvent extends WordRemindEvent {}

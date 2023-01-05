@@ -12,6 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:word/app.dart';
+import 'package:word/enum.dart';
 
 part 'word_remind_event.dart';
 
@@ -24,6 +25,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<ClearCSVFileEvent>(_onClearCSVFileEvent);
     on<TurnWordRemindEvent>(_onTurnWordRemindEvent);
     on<UpdateWordRemindEvent>(_onUpdateWordRemindEvent);
+    on<ChangeTimerPeriodEvent>(_onChangeTimerPeriodEvent);
   }
 
   int _id = 0;
@@ -65,18 +67,20 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     _timer?.cancel();
     await FilePicker.platform.clearTemporaryFiles();
     await _clearPathToSharedPreferences();
-    emit(state.copyWith(wordList: [], isWordRemind: false));
+    await _cancelNotifications();
+    emit(state.clearWordList());
   }
 
   void _onTurnWordRemindEvent(event, emit) async {
-    final wordRemindStatus = !state.isWordRemind;
-    emit(state.copyWith(isWordRemind: wordRemindStatus));
     _timer?.cancel();
-    if (wordRemindStatus) {
-      _timer = Timer.periodic(const Duration(seconds: 5), (_) {
+    if (!state.isWordRemind) {
+      emit(state.copyWith(isWordRemind: true));
+      _timer = Timer.periodic(Duration(minutes: state.minuteTimerPeriod.minute),
+          (_) {
         add(UpdateWordRemindEvent());
       });
     } else {
+      emit(state.turnOffWordRemind());
       await _cancelNotifications();
     }
   }
@@ -88,6 +92,10 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       _showNotification(randomWord),
     ]).whenComplete(() => emit(
         state.copyWith(wordRemindIndex: state.wordList.indexOf(randomWord))));
+  }
+
+  void _onChangeTimerPeriodEvent(event, emit) async {
+    emit(state.copyWith(minuteTimerPeriod: state.minuteTimerPeriod.increase));
   }
 
   Future _savePathToSharedPreferences(String path) async {

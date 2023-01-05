@@ -4,26 +4,42 @@ class WordRemindState {
   final List<List<dynamic>> wordList;
   final bool readFilePermission;
   final bool isWordRemind;
-  final int wordRemindIndex;
+  final int? wordRemindIndex;
+  final MinuteTimerPeriod minuteTimerPeriod;
 
   WordRemindState.initial()
       : wordList = [],
         readFilePermission = true,
         isWordRemind = false,
-        wordRemindIndex = 0;
+        wordRemindIndex = null,
+        minuteTimerPeriod = MinuteTimerPeriod.oneMinute;
 
   WordRemindState(this.wordList, this.readFilePermission, this.isWordRemind,
-      this.wordRemindIndex);
+      this.wordRemindIndex, this.minuteTimerPeriod);
+
+  bool get isWordReminding => isWordRemind && wordRemindIndex != null;
 
   WordRemindState copyWith(
           {List<List<dynamic>>? wordList,
           bool? readFilePermission,
           bool? isWordRemind,
-          int? wordRemindIndex}) =>
+          int? wordRemindIndex,
+          MinuteTimerPeriod? minuteTimerPeriod}) =>
       WordRemindState(
         wordList ?? this.wordList,
         readFilePermission ?? this.readFilePermission,
         isWordRemind ?? this.isWordRemind,
         wordRemindIndex ?? this.wordRemindIndex,
+        minuteTimerPeriod ?? this.minuteTimerPeriod,
       );
+
+  WordRemindState turnOffWordRemind() => WordRemindState(
+        wordList,
+        readFilePermission,
+        false,
+        null,
+        minuteTimerPeriod,
+      );
+
+  WordRemindState clearWordList() => turnOffWordRemind().copyWith(wordList: []);
 }

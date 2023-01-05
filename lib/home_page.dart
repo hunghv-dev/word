@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
+import 'package:word/enum.dart';
+
+import 'menu_float.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -39,10 +42,10 @@ class _HomePageState extends State<HomePage> {
                   content: Text(
                       'Please allow Files and media permission for pick files')));
             }
-            if (state.isWordRemind) {
-              _scrollController.animateTo(state.wordRemindIndex * 50,
+            if (state.isWordReminding) {
+              _scrollController.animateTo(state.wordRemindIndex! * 50,
                   duration: const Duration(milliseconds: 1000),
-                  curve: Curves.easeOut);
+                  curve: Curves.linear);
             }
           },
           child: Scaffold(
@@ -67,16 +70,28 @@ class _HomePageState extends State<HomePage> {
                       ListView.builder(
                         itemCount: wordList.length,
                         itemBuilder: (_, index) {
+                          final isRemindWord = state.isWordReminding &&
+                              state.wordRemindIndex == index;
                           return Container(
                             height: 50,
                             padding: const EdgeInsets.all(10.0),
+                            decoration: isRemindWord
+                                ? BoxDecoration(
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.green,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  )
+                                : null,
                             child: Row(
                               children: wordList[index]
                                   .map(
                                     (word) => Expanded(
                                       child: Text(
                                         word.toString(),
-                                        style: const TextStyle(fontSize: 15),
+                                        style: TextStyle(
+                                            fontSize: isRemindWord ? 20 : 15),
                                       ),
                                     ),
                                   )
@@ -85,23 +100,6 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                         controller: _scrollController,
-                      ),
-                      Positioned(
-                        bottom: 50,
-                        left: 0,
-                        right: 0,
-                        child: BlocBuilder<WordRemindBloc, WordRemindState>(
-                          builder: (context, state) {
-                            return FloatingActionButton(
-                              onPressed: () => _bloc.add(TurnWordRemindEvent()),
-                              backgroundColor: state.isWordRemind
-                                  ? Colors.green
-                                  : Colors.grey.shade400,
-                              child: const Icon(Icons.add_alert_outlined,
-                                  size: 30),
-                            );
-                          },
-                        ),
                       ),
                     ],
                   );
@@ -113,10 +111,22 @@ class _HomePageState extends State<HomePage> {
                 if (state.wordList.isEmpty) {
                   return const SizedBox.shrink();
                 }
-                return FloatingActionButton.small(
-                    onPressed: () => _bloc.add(ClearCSVFileEvent()),
-                    backgroundColor: Colors.red,
-                    child: const Icon(Icons.delete_forever));
+                return MenuFloat(
+                  firstIcon: const Icon(Icons.add_alert_outlined),
+                  firstColor:
+                      state.isWordRemind ? Colors.green : Colors.grey.shade400,
+                  firstTap: () => _bloc.add(TurnWordRemindEvent()),
+                  secondIcon: const Icon(Icons.timer_outlined),
+                  secondColor:
+                      state.isWordRemind ? Colors.green : Colors.grey.shade400,
+                  secondTap: () => state.isWordRemind
+                      ? null
+                      : _bloc.add(ChangeTimerPeriodEvent()),
+                  periodLabel: state.minuteTimerPeriod.label,
+                  thirdIcon: const Icon(Icons.delete_forever_outlined),
+                  thirdColor: Colors.red,
+                  thirdTap: () => _bloc.add(ClearCSVFileEvent()),
+                );
               },
             ),
           ),
