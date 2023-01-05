@@ -70,9 +70,11 @@ class _MenuFloatState extends State<MenuFloat>
           offset: Offset.fromDirection(
               getRadiansFromDegree(270), translateAnimation.value * 100),
           child: FloatingActionButton(
-              backgroundColor: widget.firstColor,
-              onPressed: widget.firstTap,
-              child: widget.firstIcon),
+            backgroundColor: widget.firstColor,
+            onPressed: widget.firstTap,
+            elevation: 0,
+            child: widget.firstIcon,
+          ),
         ),
         Transform.translate(
           offset: Offset.fromDirection(
@@ -83,6 +85,7 @@ class _MenuFloatState extends State<MenuFloat>
             child: FloatingActionButton.extended(
                 backgroundColor: widget.secondColor,
                 onPressed: widget.secondTap,
+                elevation: 0,
                 label: Text(widget.periodLabel),
                 icon: widget.secondIcon),
           ),
@@ -93,6 +96,7 @@ class _MenuFloatState extends State<MenuFloat>
           child: FloatingActionButton(
               backgroundColor: widget.thirdColor,
               onPressed: widget.thirdTap,
+              elevation: 0,
               child: widget.thirdIcon),
         ),
         FloatingActionButton(
