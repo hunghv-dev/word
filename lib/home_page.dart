@@ -17,21 +17,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isTurnOnNotification = false;
   late WordRemindBloc _bloc;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read<WordRemindBloc>()..add(LoadCSVFileEvent());
+    _scrollController = ScrollController();
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      WillPopScope(
+  Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
           MoveToBackground.moveTaskToBack();
           return false;
@@ -43,31 +39,36 @@ class _HomePageState extends State<HomePage> {
                   content: Text(
                       'Please allow Files and media permission for pick files')));
             }
+            if (state.isWordRemind) {
+              _scrollController.animateTo(state.wordRemindIndex * 50,
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.easeOut);
+            }
           },
           child: Scaffold(
-            body: BlocBuilder<WordRemindBloc, WordRemindState>(
-              builder: (context, state) {
-                final wordList = state.wordList;
-                if (wordList.isEmpty) {
-                  return Center(
-                    child: FloatingActionButton.large(
-                      onPressed: () => _bloc.add(PickCSVFileEvent()),
-                      backgroundColor: Colors.grey.shade400,
-                      child: const Icon(
-                        Icons.add,
-                        size: 50,
+            body: SafeArea(
+              child: BlocBuilder<WordRemindBloc, WordRemindState>(
+                builder: (context, state) {
+                  final wordList = state.wordList;
+                  if (wordList.isEmpty) {
+                    return Center(
+                      child: FloatingActionButton.large(
+                        onPressed: () => _bloc.add(PickCSVFileEvent()),
+                        backgroundColor: Colors.grey.shade400,
+                        child: const Icon(
+                          Icons.add,
+                          size: 50,
+                        ),
                       ),
-                    ),
-                  );
-                }
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Stack(
+                    );
+                  }
+                  return Stack(
                     children: [
                       ListView.builder(
                         itemCount: wordList.length,
                         itemBuilder: (_, index) {
-                          return Padding(
+                          return Container(
+                            height: 50,
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
                               children: wordList[index]
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         },
+                        controller: _scrollController,
                       ),
                       Positioned(
                         bottom: 50,
@@ -95,15 +97,16 @@ class _HomePageState extends State<HomePage> {
                               backgroundColor: state.isWordRemind
                                   ? Colors.green
                                   : Colors.grey.shade400,
-                              child: const Icon(Icons.add_alert_outlined, size: 30),
+                              child: const Icon(Icons.add_alert_outlined,
+                                  size: 30),
                             );
                           },
                         ),
                       ),
                     ],
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
             floatingActionButton: BlocBuilder<WordRemindBloc, WordRemindState>(
               builder: (context, state) {

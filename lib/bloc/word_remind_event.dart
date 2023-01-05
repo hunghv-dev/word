@@ -10,3 +10,5 @@ class LoadCSVFileEvent extends WordRemindEvent {}
 class ClearCSVFileEvent extends WordRemindEvent {}
 
 class TurnWordRemindEvent extends WordRemindEvent {}
+
+class UpdateWordRemindEvent extends WordRemindEvent {}

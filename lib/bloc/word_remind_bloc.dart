@@ -23,12 +23,13 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<PickCSVFileEvent>(_onPickCSVFileEvent);
     on<ClearCSVFileEvent>(_onClearCSVFileEvent);
     on<TurnWordRemindEvent>(_onTurnWordRemindEvent);
+    on<UpdateWordRemindEvent>(_onUpdateWordRemindEvent);
   }
 
   int _id = 0;
   Timer? _timer;
 
-  List<dynamic> get randomWord {
+  List<dynamic> get _randomWord {
     final randomIndex = Random().nextInt(state.wordList.length);
     return state.wordList[randomIndex];
   }
@@ -62,6 +63,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   void _onClearCSVFileEvent(event, emit) async {
     _timer?.cancel();
+    await FilePicker.platform.clearTemporaryFiles();
     await _clearPathToSharedPreferences();
     emit(state.copyWith(wordList: [], isWordRemind: false));
   }
@@ -69,15 +71,23 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   void _onTurnWordRemindEvent(event, emit) async {
     final wordRemindStatus = !state.isWordRemind;
     emit(state.copyWith(isWordRemind: wordRemindStatus));
+    _timer?.cancel();
     if (wordRemindStatus) {
-      // _timer = Timer.periodic(
-      //     const Duration(seconds: 5), (_) => _showNotification(randomWord));
-      await _cancelNotifications();
-      await _showNotification(randomWord);
+      _timer = Timer.periodic(const Duration(seconds: 5), (_) {
+        add(UpdateWordRemindEvent());
+      });
     } else {
-      _timer?.cancel();
       await _cancelNotifications();
     }
+  }
+
+  void _onUpdateWordRemindEvent(event, emit) async {
+    final randomWord = _randomWord;
+    await Future.wait([
+      _cancelNotifications(),
+      _showNotification(randomWord),
+    ]).whenComplete(() => emit(
+        state.copyWith(wordRemindIndex: state.wordList.indexOf(randomWord))));
   }
 
   Future _savePathToSharedPreferences(String path) async {
