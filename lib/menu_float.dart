@@ -46,7 +46,7 @@ class _MenuFloatState extends State<MenuFloat>
     animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
     translateAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(animationController);
+        Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
     iconAnimation =
         Tween<double>(begin: 0.0, end: 1.0).animate(animationController);
     super.initState();
