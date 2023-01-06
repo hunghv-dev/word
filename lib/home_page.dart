@@ -56,61 +56,56 @@ class _HomePageState extends State<HomePage> {
             }
           },
           child: Scaffold(
-            body: SafeArea(
-              child: BlocBuilder<WordRemindBloc, WordRemindState>(
-                builder: (context, state) {
-                  final wordList = state.wordList;
-                  if(wordList.isEmpty){
-                    return const EmptyPage();
-                  }
-                  return Stack(
-                    children: [
-                      ListView.builder(
-                        itemCount: wordList.length,
-                        itemBuilder: (_, index) {
-                          final isFocusWord = state.isFocusWord(index);
-                          return Container(
-                            height: 50,
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: isFocusWord
-                                ? BoxDecoration(
-                                    border: Border.all(
-                                        width: 0.1, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: LinearGradient(
-                                        colors: [
-                                          Colors.white.withOpacity(0.2),
-                                          Colors.transparent,
-                                          Colors.white.withOpacity(0.05),
-                                        ],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter),
-                                  )
-                                : null,
-                            child: Row(
-                              children: wordList[index]
-                                  .map(
-                                    (word) => Expanded(
-                                      flex: wordList[index].indexOf(word) == 0
-                                          ? 2
-                                          : 3,
-                                      child: Text(
-                                        word.toString(),
-                                        style: TextStyle(
-                                            fontSize: isFocusWord ? 20 : 15),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          );
-                        },
-                        controller: _scrollController,
+            body: BlocBuilder<WordRemindBloc, WordRemindState>(
+              builder: (context, state) {
+                final wordList = state.wordList;
+                if (wordList.isEmpty) {
+                  return const EmptyPage();
+                }
+                return ListView.builder(
+                  padding: const EdgeInsets.only(top: 30, bottom: 20),
+                  itemCount: wordList.length,
+                  itemBuilder: (_, index) {
+                    final isFocusWord = state.isFocusWord(index);
+                    return Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10.0),
+                      decoration: isFocusWord
+                          ? BoxDecoration(
+                              border:
+                                  Border.all(width: 0.1, color: Colors.white),
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Colors.white.withOpacity(0.2),
+                                    Colors.transparent,
+                                    Colors.white.withOpacity(0.05),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                            )
+                          : null,
+                      child: Row(
+                        children: wordList[index]
+                            .map(
+                              (word) => Expanded(
+                                flex:
+                                    wordList[index].indexOf(word) == 0 ? 2 : 3,
+                                child: Text(
+                                  word.toString(),
+                                  style: TextStyle(
+                                      fontSize: isFocusWord ? 20 : 15),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    );
+                  },
+                  controller: _scrollController,
+                );
+              },
             ),
             floatingActionButton: BlocBuilder<WordRemindBloc, WordRemindState>(
               builder: (context, state) {
