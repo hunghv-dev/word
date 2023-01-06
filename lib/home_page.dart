@@ -112,22 +112,13 @@ class _HomePageState extends State<HomePage> {
                 }
                 return MenuFloat(
                   firstIcon: const Icon(Icons.add_alert_outlined),
-                  firstColor:
-                      state.isWordRemind ? ColorUtils.green : ColorUtils.grey,
                   firstTap: () => _bloc.add(TurnWordRemindEvent()),
                   secondIcon: const Icon(Icons.timer_outlined),
-                  secondColor:
-                      state.isWordRemind ? ColorUtils.green : ColorUtils.grey,
-                  secondTap: state.isWordRemind
-                      ? null
-                      : () => _bloc.add(ChangeTimerPeriodEvent()),
-                  periodLabel: state.minuteTimerPeriod.label,
+                  secondTap: () => _bloc.add(ChangeTimerPeriodEvent()),
                   thirdIcon: const Icon(Icons.delete_forever_outlined),
-                  thirdColor: ColorUtils.red,
-                  thirdTap: state.isWordRemind
-                      ? null
-                      : () => _bloc.add(ClearCSVFileEvent()),
-                  backgroundColor: state.isWordRemind ? ColorUtils.green : ColorUtils.blue,
+                  thirdTap: () => _bloc.add(ClearCSVFileEvent()),
+                  periodLabel: state.minuteTimerPeriod.label,
+                  isWordRemind: state.isWordRemind,
                 );
               },
             ),

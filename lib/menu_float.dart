@@ -5,28 +5,22 @@ class MenuFloat extends StatefulWidget {
   final Icon firstIcon;
   final Icon secondIcon;
   final Icon thirdIcon;
-  final Color firstColor;
-  final Color secondColor;
-  final Color thirdColor;
-  final Color backgroundColor;
   final VoidCallback firstTap;
   final VoidCallback? secondTap;
   final VoidCallback? thirdTap;
   final String periodLabel;
+  final bool isWordRemind;
 
   const MenuFloat({
     super.key,
     required this.firstIcon,
     required this.secondIcon,
     required this.thirdIcon,
-    required this.firstColor,
-    required this.secondColor,
-    required this.thirdColor,
-    required this.backgroundColor,
     required this.firstTap,
     required this.secondTap,
     required this.thirdTap,
     required this.periodLabel,
+    required this.isWordRemind,
   });
 
   @override
@@ -47,8 +41,8 @@ class _MenuFloatState extends State<MenuFloat>
   void initState() {
     animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
-    translateAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
+    translateAnimation = Tween(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
     iconAnimation =
         Tween<double>(begin: 0.0, end: 1.0).animate(animationController);
     super.initState();
@@ -61,6 +55,14 @@ class _MenuFloatState extends State<MenuFloat>
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  void _toggleMenu() {
+    if (animationController.isCompleted) {
+      animationController.reverse();
+    } else {
+      animationController.forward();
+    }
   }
 
   @override
@@ -79,8 +81,14 @@ class _MenuFloatState extends State<MenuFloat>
           offset: Offset.fromDirection(
               getRadiansFromDegree(270), translateAnimation.value * 100),
           child: FloatingActionButton(
-            backgroundColor: widget.firstColor,
-            onPressed: widget.firstTap,
+            backgroundColor:
+                widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
+            onPressed: () {
+              widget.firstTap();
+              if (!widget.isWordRemind) {
+                _toggleMenu();
+              }
+            },
             elevation: 0,
             child: widget.firstIcon,
           ),
@@ -92,8 +100,9 @@ class _MenuFloatState extends State<MenuFloat>
             transform: Matrix4.identity()..scale(translateAnimation.value),
             alignment: Alignment.center,
             child: FloatingActionButton.extended(
-                backgroundColor: widget.secondColor,
-                onPressed: widget.secondTap,
+                backgroundColor:
+                    widget.isWordRemind ? ColorUtils.grey : ColorUtils.green,
+                onPressed: widget.isWordRemind ? null : widget.secondTap,
                 elevation: 0,
                 label: Text(widget.periodLabel),
                 icon: widget.secondIcon),
@@ -103,24 +112,22 @@ class _MenuFloatState extends State<MenuFloat>
           offset: Offset.fromDirection(
               getRadiansFromDegree(180), translateAnimation.value * 100),
           child: FloatingActionButton(
-              backgroundColor: widget.thirdColor,
-              onPressed: widget.thirdTap,
+              backgroundColor:
+                  widget.isWordRemind ? ColorUtils.grey : ColorUtils.red,
+              onPressed: widget.isWordRemind ? null : widget.thirdTap,
               elevation: 0,
               child: widget.thirdIcon),
         ),
         FloatingActionButton(
-          backgroundColor: widget.backgroundColor,
-          child: AnimatedIcon(
-            icon: AnimatedIcons.menu_close,
-            progress: iconAnimation,
-          ),
-          onPressed: () {
-            if (animationController.isCompleted) {
-              animationController.reverse();
-            } else {
-              animationController.forward();
-            }
-          },
+          backgroundColor:
+              widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
+          onPressed: _toggleMenu,
+          child: widget.isWordRemind
+              ? widget.firstIcon
+              : AnimatedIcon(
+                  icon: AnimatedIcons.menu_close,
+                  progress: iconAnimation,
+                ),
         )
       ],
     );
