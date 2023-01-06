@@ -9,8 +9,8 @@ class MenuFloat extends StatefulWidget {
   final Color secondColor;
   final Color thirdColor;
   final VoidCallback firstTap;
-  final VoidCallback secondTap;
-  final VoidCallback thirdTap;
+  final VoidCallback? secondTap;
+  final VoidCallback? thirdTap;
   final String periodLabel;
 
   const MenuFloat({

@@ -118,13 +118,15 @@ class _HomePageState extends State<HomePage> {
                   secondIcon: const Icon(Icons.timer_outlined),
                   secondColor:
                       state.isWordRemind ? ColorUtils.green : ColorUtils.grey,
-                  secondTap: () => state.isWordRemind
+                  secondTap: state.isWordRemind
                       ? null
-                      : _bloc.add(ChangeTimerPeriodEvent()),
+                      : () => _bloc.add(ChangeTimerPeriodEvent()),
                   periodLabel: state.minuteTimerPeriod.label,
                   thirdIcon: const Icon(Icons.delete_forever_outlined),
                   thirdColor: ColorUtils.red,
-                  thirdTap: () => _bloc.add(ClearCSVFileEvent()),
+                  thirdTap: state.isWordRemind
+                      ? null
+                      : () => _bloc.add(ClearCSVFileEvent()),
                 );
               },
             ),
