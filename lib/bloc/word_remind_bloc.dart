@@ -76,7 +76,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     _timer?.cancel();
     if (!state.isWordRemind) {
       emit(state.copyWith(isWordRemind: true));
-      _timer = Timer.periodic(Duration(seconds: state.minuteTimerPeriod.minute),
+      _timer = Timer.periodic(Duration(minutes: state.minuteTimerPeriod.minute),
           (_) {
         add(UpdateWordRemindEvent());
       });
