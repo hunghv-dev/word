@@ -72,10 +72,18 @@ class _HomePageState extends State<HomePage> {
                                 ? BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: ColorUtils.green,
+                                      color: ColorUtils.black,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
-                                    color: ColorUtils.focusBackground,
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        ColorUtils.background,
+                                        Colors.transparent,
+                                        ColorUtils.background
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                    ),
                                   )
                                 : null,
                             child: Row(
