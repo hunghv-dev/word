@@ -6,5 +6,4 @@ class ColorUtils {
   static const Color green = Colors.green;
   static const Color blue = Colors.blue;
   static final Color grey = Colors.grey.shade400;
-
 }
