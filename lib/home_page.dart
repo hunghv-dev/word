@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   return const EmptyPage();
                 }
                 return ListView.builder(
-                  padding: const EdgeInsets.only(top: 30, bottom: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 50),
                   itemCount: wordList.length,
                   itemBuilder: (_, index) {
                     final isFocusWord = state.isFocusWord(index);
