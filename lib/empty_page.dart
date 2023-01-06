@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word/usecase_stepper.dart';
+import 'package:word/item_stepper.dart';
 import 'package:word/utils/string_utils.dart';
 
 class EmptyPage extends StatefulWidget {
@@ -11,7 +11,6 @@ class EmptyPage extends StatefulWidget {
 
 class _EmptyPageState extends State<EmptyPage>
     with SingleTickerProviderStateMixin {
-  bool _isShowStepper = false;
   late final Animation<double> _rotationAnimation;
   late final AnimationController _animationController;
 
@@ -21,14 +20,20 @@ class _EmptyPageState extends State<EmptyPage>
         AnimationController(vsync: this, duration: const Duration(seconds: 1))
           ..forward()
           ..repeat(reverse: true);
-    _rotationAnimation =
-        Tween(begin: -0.05, end: 0.05).animate(_animationController);
+    _rotationAnimation = Tween(begin: -0.02, end: 0.02).animate(CurvedAnimation(
+        parent: _animationController, curve: Curves.elasticInOut));
     super.initState();
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
       child: Column(
         children: [
           const SizedBox(height: 50),
@@ -41,29 +46,17 @@ class _EmptyPageState extends State<EmptyPage>
             StringUtils.appTitle,
             style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
           ),
+          const Divider(),
           const SizedBox(height: 20),
-          Expanded(
-            flex: 3,
-            child: Column(
-              children: [
-                Center(
-                  child: IconButton(
-                    onPressed: () =>
-                        setState(() => _isShowStepper = !_isShowStepper),
-                    icon: const Icon(Icons.info),
-                    iconSize: 40,
-                  ),
-                ),
-                AnimatedOpacity(
-                  opacity: _isShowStepper ? 1 : 0,
-                  duration: const Duration(milliseconds: 300),
-                  child: _isShowStepper
-                      ? const UseCaseStepper()
-                      : const SizedBox.shrink(),
-                ),
-              ],
-            ),
-          ),
+          const ItemStepper(
+              index: StringUtils.textStep1,
+              title: StringUtils.textUseCaseStep1),
+          const ItemStepper(
+              index: StringUtils.textStep2,
+              title: StringUtils.textUseCaseStep2),
+          const ItemStepper(
+              index: StringUtils.textStep3,
+              title: StringUtils.textUseCaseStep3),
         ],
       ),
     );
