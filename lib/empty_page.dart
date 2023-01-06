@@ -54,8 +54,13 @@ class _EmptyPageState extends State<EmptyPage>
                     iconSize: 40,
                   ),
                 ),
-                Visibility(
-                    visible: _isShowStepper, child: const UseCaseStepper()),
+                AnimatedOpacity(
+                  opacity: _isShowStepper ? 1 : 0,
+                  duration: const Duration(milliseconds: 300),
+                  child: _isShowStepper
+                      ? const UseCaseStepper()
+                      : const SizedBox.shrink(),
+                ),
               ],
             ),
           ),
