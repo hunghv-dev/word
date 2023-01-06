@@ -101,7 +101,7 @@ class _MenuFloatState extends State<MenuFloat>
             alignment: Alignment.center,
             child: FloatingActionButton.extended(
                 backgroundColor:
-                    widget.isWordRemind ? ColorUtils.grey : ColorUtils.green,
+                    widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
                 onPressed: widget.isWordRemind ? null : widget.secondTap,
                 elevation: 0,
                 label: Text(widget.periodLabel),
