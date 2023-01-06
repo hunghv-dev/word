@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
+import 'package:word/empty_page.dart';
 import 'package:word/enum.dart';
 import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/string_utils.dart';
@@ -59,6 +60,9 @@ class _HomePageState extends State<HomePage> {
               child: BlocBuilder<WordRemindBloc, WordRemindState>(
                 builder: (context, state) {
                   final wordList = state.wordList;
+                  if(wordList.isEmpty){
+                    return const EmptyPage();
+                  }
                   return Stack(
                     children: [
                       ListView.builder(
