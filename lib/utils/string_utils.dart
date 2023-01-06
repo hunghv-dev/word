@@ -11,7 +11,7 @@ class StringUtils {
       'word_remind_change_description';
   static const String textStep1 = '1';
   static const String textUseCaseStep1 =
-      'Create a CSV file (Column : Row = 2 : N) from Google Sheets';
+      'Create and export a CSV file (Column : Row = 2 : N) from Google Sheets';
   static const String textStep2 = '2';
   static const String textUseCaseStep2 =
       'Import that created file to App';
