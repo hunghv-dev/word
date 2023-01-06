@@ -8,6 +8,7 @@ class MenuFloat extends StatefulWidget {
   final Color firstColor;
   final Color secondColor;
   final Color thirdColor;
+  final Color backgroundColor;
   final VoidCallback firstTap;
   final VoidCallback? secondTap;
   final VoidCallback? thirdTap;
@@ -21,6 +22,7 @@ class MenuFloat extends StatefulWidget {
     required this.firstColor,
     required this.secondColor,
     required this.thirdColor,
+    required this.backgroundColor,
     required this.firstTap,
     required this.secondTap,
     required this.thirdTap,
@@ -107,7 +109,7 @@ class _MenuFloatState extends State<MenuFloat>
               child: widget.thirdIcon),
         ),
         FloatingActionButton(
-          backgroundColor: ColorUtils.blue,
+          backgroundColor: widget.backgroundColor,
           child: AnimatedIcon(
             icon: AnimatedIcons.menu_close,
             progress: iconAnimation,

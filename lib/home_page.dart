@@ -127,6 +127,7 @@ class _HomePageState extends State<HomePage> {
                   thirdTap: state.isWordRemind
                       ? null
                       : () => _bloc.add(ClearCSVFileEvent()),
+                  backgroundColor: state.isWordRemind ? ColorUtils.green : ColorUtils.blue,
                 );
               },
             ),
