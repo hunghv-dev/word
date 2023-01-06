@@ -71,15 +71,7 @@ class _HomePageState extends State<HomePage> {
                             decoration: isFocusWord
                                 ? BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        ColorUtils.focusBackground,
-                                        Colors.transparent,
-                                        ColorUtils.focusBackground
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    ),
+                                    color: ColorUtils.darkGreen,
                                   )
                                 : null,
                             child: Row(
