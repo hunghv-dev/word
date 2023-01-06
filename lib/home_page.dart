@@ -70,16 +70,12 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(10.0),
                             decoration: isFocusWord
                                 ? BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: ColorUtils.black,
-                                    ),
                                     borderRadius: BorderRadius.circular(10),
                                     gradient: const LinearGradient(
                                       colors: [
-                                        ColorUtils.background,
+                                        ColorUtils.focusBackground,
                                         Colors.transparent,
-                                        ColorUtils.background
+                                        ColorUtils.focusBackground
                                       ],
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
