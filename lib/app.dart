@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/home_page.dart';
+import 'package:word/utils/color_utils.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -35,7 +36,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xff0F202F),
+        scaffoldBackgroundColor: ColorUtils.background,
       ),
       home: BlocProvider(
         create: (context) => WordRemindBloc(),

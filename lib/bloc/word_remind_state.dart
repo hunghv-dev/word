@@ -19,6 +19,8 @@ class WordRemindState {
 
   bool get isWordReminding => isWordRemind && wordRemindIndex != null;
 
+  bool isFocusWord(int index) => isWordReminding && wordRemindIndex == index;
+
   WordRemindState copyWith(
           {List<List<dynamic>>? wordList,
           bool? readFilePermission,

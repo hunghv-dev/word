@@ -13,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:word/app.dart';
 import 'package:word/enum.dart';
+import 'package:word/utils/string_utils.dart';
 
 part 'word_remind_event.dart';
 
@@ -38,7 +39,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   void _onLoadCSVFileEvent(event, emit) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    final path = sharedPreferences.getString('path');
+    final path = sharedPreferences.getString(StringUtils.tagSpfCsvFilePath);
     if (path == null) return;
     List<List<dynamic>> listData = await _loadingCsvData(path);
     emit(state.copyWith(wordList: listData));
@@ -75,7 +76,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     _timer?.cancel();
     if (!state.isWordRemind) {
       emit(state.copyWith(isWordRemind: true));
-      _timer = Timer.periodic(Duration(minutes: state.minuteTimerPeriod.minute),
+      _timer = Timer.periodic(Duration(seconds: state.minuteTimerPeriod.minute),
           (_) {
         add(UpdateWordRemindEvent());
       });
@@ -100,12 +101,12 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   Future _savePathToSharedPreferences(String path) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('path', path);
+    await sharedPreferences.setString(StringUtils.tagSpfCsvFilePath, path);
   }
 
   Future _clearPathToSharedPreferences() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.remove('path');
+    await sharedPreferences.remove(StringUtils.tagSpfCsvFilePath);
   }
 
   Future<List<List<dynamic>>> _loadingCsvData(String path) async {
@@ -126,9 +127,9 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   Future<void> _showNotification(List<dynamic> word) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      'word_remind_change_id',
-      'word_remind_change_name',
-      channelDescription: 'word_remind_change_description',
+      StringUtils.channelIdNotification,
+      StringUtils.channelNameNotification,
+      channelDescription: StringUtils.channelDescriptionNotification,
       importance: Importance.max,
       priority: Priority.max,
     );
@@ -144,5 +145,10 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   Future<void> _cancelNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  void dispose() {
+    _timer?.cancel();
+    _cancelNotifications();
   }
 }

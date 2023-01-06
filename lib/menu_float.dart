@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word/utils/color_utils.dart';
 
 class MenuFloat extends StatefulWidget {
   final Icon firstIcon;
@@ -55,6 +56,12 @@ class _MenuFloatState extends State<MenuFloat>
   }
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomRight,
@@ -100,7 +107,7 @@ class _MenuFloatState extends State<MenuFloat>
               child: widget.thirdIcon),
         ),
         FloatingActionButton(
-          backgroundColor: Colors.blue,
+          backgroundColor: ColorUtils.blue,
           child: AnimatedIcon(
             icon: AnimatedIcons.menu_close,
             progress: iconAnimation,
