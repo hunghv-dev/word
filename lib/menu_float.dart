@@ -80,17 +80,20 @@ class _MenuFloatState extends State<MenuFloat>
         Transform.translate(
           offset: Offset.fromDirection(
               getRadiansFromDegree(270), translateAnimation.value * 100),
-          child: FloatingActionButton(
-            backgroundColor:
-                widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
-            onPressed: () {
-              widget.firstTap();
-              if (!widget.isWordRemind) {
-                _toggleMenu();
-              }
-            },
-            elevation: 0,
-            child: widget.firstIcon,
+          child: Transform(
+            transform: Matrix4.identity()..scale(translateAnimation.value),
+            child: FloatingActionButton(
+              backgroundColor:
+                  widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
+              onPressed: () {
+                widget.firstTap();
+                if (!widget.isWordRemind) {
+                  _toggleMenu();
+                }
+              },
+              elevation: 0,
+              child: widget.firstIcon,
+            ),
           ),
         ),
         Transform.translate(
@@ -111,12 +114,15 @@ class _MenuFloatState extends State<MenuFloat>
         Transform.translate(
           offset: Offset.fromDirection(
               getRadiansFromDegree(180), translateAnimation.value * 100),
-          child: FloatingActionButton(
-              backgroundColor:
-                  widget.isWordRemind ? ColorUtils.grey : ColorUtils.red,
-              onPressed: widget.isWordRemind ? null : widget.thirdTap,
-              elevation: 0,
-              child: widget.thirdIcon),
+          child: Transform(
+            transform: Matrix4.identity()..scale(translateAnimation.value),
+            child: FloatingActionButton(
+                backgroundColor:
+                    widget.isWordRemind ? ColorUtils.grey : ColorUtils.red,
+                onPressed: widget.isWordRemind ? null : widget.thirdTap,
+                elevation: 0,
+                child: widget.thirdIcon),
+          ),
         ),
         FloatingActionButton(
           backgroundColor:
