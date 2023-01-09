@@ -6,16 +6,18 @@ class WordRemindState {
   final bool isWordRemind;
   final int? wordRemindIndex;
   final MinuteTimerPeriod minuteTimerPeriod;
+  final bool isLoading;
 
   WordRemindState.initial()
       : wordList = [],
         readFilePermission = true,
         isWordRemind = false,
         wordRemindIndex = null,
-        minuteTimerPeriod = MinuteTimerPeriod.oneMinute;
+        minuteTimerPeriod = MinuteTimerPeriod.oneMinute,
+        isLoading = true;
 
   WordRemindState(this.wordList, this.readFilePermission, this.isWordRemind,
-      this.wordRemindIndex, this.minuteTimerPeriod);
+      this.wordRemindIndex, this.minuteTimerPeriod, this.isLoading);
 
   bool get isWordReminding => isWordRemind && wordRemindIndex != null;
 
@@ -26,13 +28,15 @@ class WordRemindState {
           bool? readFilePermission,
           bool? isWordRemind,
           int? wordRemindIndex,
-          MinuteTimerPeriod? minuteTimerPeriod}) =>
+          MinuteTimerPeriod? minuteTimerPeriod,
+          bool? isLoading}) =>
       WordRemindState(
         wordList ?? this.wordList,
         readFilePermission ?? this.readFilePermission,
         isWordRemind ?? this.isWordRemind,
         wordRemindIndex ?? this.wordRemindIndex,
         minuteTimerPeriod ?? this.minuteTimerPeriod,
+        isLoading ?? this.isLoading,
       );
 
   WordRemindState turnOffWordRemind() => WordRemindState(
@@ -41,6 +45,7 @@ class WordRemindState {
         false,
         null,
         minuteTimerPeriod,
+        false,
       );
 
   WordRemindState clearWordList() => turnOffWordRemind().copyWith(wordList: []);

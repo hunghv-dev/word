@@ -40,12 +40,16 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   void _onLoadCSVFileEvent(event, emit) async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final path = sharedPreferences.getString(StringUtils.tagSpfCsvFilePath);
-    if (path == null) return;
+    if (path == null) {
+      emit(state.copyWith(wordList: [], isLoading: false));
+      return;
+    }
     List<List<dynamic>> listData = await _loadingCsvData(path);
-    emit(state.copyWith(wordList: listData));
+    emit(state.copyWith(wordList: listData, isLoading: false));
   }
 
   void _onPickCSVFileEvent(event, emit) async {
+    emit(state.copyWith(isLoading: true));
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowedExtensions: ['csv'],
@@ -61,6 +65,8 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       if (!status.isGranted) {
         emit(state.copyWith(readFilePermission: false));
       }
+    } finally {
+      emit(state.copyWith(isLoading: false));
     }
   }
 

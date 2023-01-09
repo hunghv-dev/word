@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,11 @@ Future<void> main() async {
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
   );
-  runApp(const App());
+  runApp(DevicePreview(
+    enabled: true,
+    tools: const [...DevicePreview.defaultTools],
+    builder: (context) => const App(),
+  ));
 }
 
 class App extends StatelessWidget {
