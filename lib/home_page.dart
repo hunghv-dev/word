@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
@@ -153,7 +154,8 @@ class _HomePageState extends State<HomePage> {
                 }
                 return MenuFloat(
                   firstIcon: const Icon(Icons.add_alert_outlined),
-                  firstTap: () => _bloc.add(TurnWordRemindEvent()),
+                  firstTap: () => _connectToServer(state.isWordRemind),
+                  // firstTap: () => _bloc.add(TurnWordRemindEvent()),
                   secondIcon: const Icon(Icons.timer_outlined),
                   secondTap: () => _bloc.add(ChangeTimerPeriodEvent()),
                   thirdIcon: const Icon(Icons.delete_forever_outlined),
@@ -166,4 +168,46 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+
+  Future<void> _connectToServer(bool isWordRemind) async {
+    const config = FlutterBackgroundAndroidConfig(
+      notificationTitle: 'flutter_background example app',
+      notificationText:
+          'Background notification for keeping the example app running in the background',
+      notificationIcon: AndroidResource(name: 'background_icon'),
+      notificationImportance: AndroidNotificationImportance.Default,
+      enableWifiLock: false,
+    );
+
+    var hasPermissions = await FlutterBackground.hasPermissions;
+    if (!hasPermissions) {
+      await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+                title: Text('Permissions needed'),
+                content: Text(
+                    'Shortly the OS will ask you for permission to execute this app in the background. This is required in order to receive chat messages when the app is not in the foreground.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ]);
+          });
+    }
+
+    hasPermissions = await FlutterBackground.initialize(androidConfig: config);
+
+    if (hasPermissions) {
+      if (isWordRemind) {
+        await FlutterBackground.disableBackgroundExecution();
+      } else {
+        await FlutterBackground.enableBackgroundExecution();
+        _bloc.add(TurnWordRemindEvent());
+      }
+    } else {
+
+    }
+  }
 }
