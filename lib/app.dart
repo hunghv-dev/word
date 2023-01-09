@@ -25,7 +25,7 @@ Future<void> main() async {
     initializationSettings,
   );
   runApp(DevicePreview(
-    enabled: true,
+    enabled: false,
     tools: const [...DevicePreview.defaultTools],
     builder: (context) => const App(),
   ));

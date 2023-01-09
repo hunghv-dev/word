@@ -44,7 +44,7 @@ class _EmptyPageState extends State<EmptyPage>
           const SizedBox(height: 20),
           const Text(
             StringUtils.appTitle,
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           const Divider(),
           const SizedBox(height: 20),
