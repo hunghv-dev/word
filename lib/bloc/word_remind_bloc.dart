@@ -84,6 +84,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       androidConfig: const FlutterBackgroundAndroidConfig(
         notificationTitle: 'Word Remind App',
         notificationText: 'Running',
+        notificationImportance: AndroidNotificationImportance.Max,
         enableWifiLock: false,
       ),
     );
