@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           listener: (context, state) {
             if (!state.readFilePermission) {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text(StringUtils.permissionRemind)));
+                  const SnackBar(content: Text(StringUtils.readPermissionRemind)));
             }
             if (state.isWordReminding) {
               _scrollController.animateTo(state.wordRemindIndex! * 50,
@@ -95,9 +95,9 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(10),
                                     gradient: LinearGradient(
                                         colors: [
-                                          Colors.white.withOpacity(0.2),
-                                          Colors.transparent,
                                           Colors.white.withOpacity(0.05),
+                                          Colors.transparent,
+                                          Colors.white.withOpacity(0.2),
                                         ],
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter),
@@ -154,8 +154,7 @@ class _HomePageState extends State<HomePage> {
                 }
                 return MenuFloat(
                   firstIcon: const Icon(Icons.add_alert_outlined),
-                  firstTap: () => _connectToServer(state.isWordRemind),
-                  // firstTap: () => _bloc.add(TurnWordRemindEvent()),
+                  firstTap: () => _bloc.add(TurnWordRemindEvent()),
                   secondIcon: const Icon(Icons.timer_outlined),
                   secondTap: () => _bloc.add(ChangeTimerPeriodEvent()),
                   thirdIcon: const Icon(Icons.delete_forever_outlined),
@@ -169,45 +168,4 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Future<void> _connectToServer(bool isWordRemind) async {
-    const config = FlutterBackgroundAndroidConfig(
-      notificationTitle: 'flutter_background example app',
-      notificationText:
-          'Background notification for keeping the example app running in the background',
-      notificationIcon: AndroidResource(name: 'background_icon'),
-      notificationImportance: AndroidNotificationImportance.Default,
-      enableWifiLock: false,
-    );
-
-    var hasPermissions = await FlutterBackground.hasPermissions;
-    if (!hasPermissions) {
-      await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-                title: Text('Permissions needed'),
-                content: Text(
-                    'Shortly the OS will ask you for permission to execute this app in the background. This is required in order to receive chat messages when the app is not in the foreground.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'OK'),
-                    child: const Text('OK'),
-                  ),
-                ]);
-          });
-    }
-
-    hasPermissions = await FlutterBackground.initialize(androidConfig: config);
-
-    if (hasPermissions) {
-      if (isWordRemind) {
-        await FlutterBackground.disableBackgroundExecution();
-      } else {
-        await FlutterBackground.enableBackgroundExecution();
-        _bloc.add(TurnWordRemindEvent());
-      }
-    } else {
-
-    }
-  }
 }

@@ -7,6 +7,7 @@ import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -78,10 +79,25 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     emit(state.clearWordList());
   }
 
+  Future<bool> _checkBackgroundPermission(emit) async {
+    final hasPermissions = await FlutterBackground.initialize(
+      androidConfig: const FlutterBackgroundAndroidConfig(
+        notificationTitle: 'Word Remind App',
+        notificationText: 'Running',
+        enableWifiLock: false,
+      ),
+    );
+    return hasPermissions;
+  }
+
   void _onTurnWordRemindEvent(event, emit) async {
+    final hasPermission = await _checkBackgroundPermission(emit);
+    if (!hasPermission) return;
+
     _timer?.cancel();
     if (!state.isWordRemind) {
       emit(state.copyWith(isWordRemind: true));
+      await FlutterBackground.enableBackgroundExecution();
       _timer = Timer.periodic(Duration(minutes: state.minuteTimerPeriod.minute),
           (_) {
         add(UpdateWordRemindEvent());
@@ -89,6 +105,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     } else {
       emit(state.turnOffWordRemind());
       await _cancelNotifications();
+      await FlutterBackground.disableBackgroundExecution();
     }
   }
 

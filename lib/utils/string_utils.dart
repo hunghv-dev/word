@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class StringUtils {
   static const String appTitle = 'Word Reminder';
-  static const String permissionRemind =
+  static const String readPermissionRemind =
       'Please allow Files and media permission for pick files';
   static const String tagSpfCsvFilePath = 'csv_path';
   static const String channelIdNotification = 'word_remind_change_id';
