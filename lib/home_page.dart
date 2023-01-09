@@ -68,10 +68,15 @@ class _HomePageState extends State<HomePage> {
                 }
                 return CustomScrollView(
                   slivers: [
-                    const SliverToBoxAdapter(
-                      child: Icon(
-                        Icons.arrow_drop_up,
-                        size: 50,
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.arrow_drop_up,
+                            size: 50,
+                          ),
+                          Divider(),
+                        ],
                       ),
                     ),
                     SliverFixedExtentList(
@@ -119,10 +124,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                       itemExtent: 50,
                     ),
-                    const SliverToBoxAdapter(
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        size: 50,
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: const [
+                          Divider(),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            size: 50,
+                          ),
+                        ],
                       ),
                     ),
                   ],
