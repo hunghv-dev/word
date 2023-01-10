@@ -52,6 +52,14 @@ class _MenuFloatState extends State<MenuFloat>
   }
 
   @override
+  void didUpdateWidget(covariant MenuFloat oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isWordRemind == false && widget.isWordRemind == true) {
+      _toggleMenu();
+    }
+  }
+
+  @override
   void dispose() {
     animationController.dispose();
     super.dispose();
@@ -85,12 +93,7 @@ class _MenuFloatState extends State<MenuFloat>
             child: FloatingActionButton(
               backgroundColor:
                   widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
-              onPressed: () {
-                widget.firstTap();
-                if (!widget.isWordRemind) {
-                  _toggleMenu();
-                }
-              },
+              onPressed: widget.firstTap,
               elevation: 0,
               child: widget.firstIcon,
             ),

@@ -96,7 +96,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     if (!hasPermission) return;
 
     _timer?.cancel();
-    if (state.isWordReminding) {
+    if (state.isWordRemind) {
       final isDisable = await FlutterBackground.disableBackgroundExecution();
       if (!isDisable) return;
       emit(state.turnOffWordRemind());
