@@ -13,9 +13,9 @@ class StringUtils {
   static const String textUseCaseStep1 =
       'Create and export a CSV file (Column:Row = 2:N) from Google Sheets';
   static const String textStep2 = '2';
-  static const String textUseCaseStep2 =
-      'Import that created file to App';
+  static const String textUseCaseStep2 = 'Import that created file to App';
   static const String textStep3 = '3';
   static const String textUseCaseStep3 =
       'Change timer for push remind notification';
+  static const String titleRunningApp = 'Running';
 }

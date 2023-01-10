@@ -30,7 +30,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<ChangeTimerPeriodEvent>(_onChangeTimerPeriodEvent);
   }
 
-  int _id = 0;
+  static const _id = 42;
   Timer? _timer;
 
   List<dynamic> get _randomWord {
@@ -82,9 +82,9 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   Future<bool> _checkBackgroundPermission(emit) async {
     final hasPermissions = await FlutterBackground.initialize(
       androidConfig: const FlutterBackgroundAndroidConfig(
-        notificationTitle: 'Word Remind App',
-        notificationText: 'Running',
-        notificationImportance: AndroidNotificationImportance.Max,
+        notificationTitle: StringUtils.appTitle,
+        notificationText: StringUtils.titleRunningApp,
+        notificationImportance: AndroidNotificationImportance.Default,
         enableWifiLock: false,
       ),
     );
@@ -96,18 +96,20 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     if (!hasPermission) return;
 
     _timer?.cancel();
-    if (!state.isWordRemind) {
-      emit(state.copyWith(isWordRemind: true));
-      await FlutterBackground.enableBackgroundExecution();
-      _timer = Timer.periodic(Duration(minutes: state.minuteTimerPeriod.minute),
-          (_) {
-        add(UpdateWordRemindEvent());
-      });
-    } else {
+    if (state.isWordReminding) {
+      final isDisable = await FlutterBackground.disableBackgroundExecution();
+      if (!isDisable) return;
       emit(state.turnOffWordRemind());
       await _cancelNotifications();
-      await FlutterBackground.disableBackgroundExecution();
+      return;
     }
+    final isEnable = await FlutterBackground.enableBackgroundExecution();
+    if (!isEnable) return;
+    emit(state.copyWith(isWordRemind: true));
+    _timer = Timer.periodic(
+      Duration(minutes: state.minuteTimerPeriod.minute),
+      (_) => add(UpdateWordRemindEvent()),
+    );
   }
 
   void _onUpdateWordRemindEvent(event, emit) async {
@@ -154,13 +156,13 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       StringUtils.channelIdNotification,
       StringUtils.channelNameNotification,
       channelDescription: StringUtils.channelDescriptionNotification,
-      importance: Importance.max,
-      priority: Priority.max,
+      importance: Importance.high,
+      priority: Priority.defaultPriority,
     );
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
-      _id++,
+      _id,
       word[0],
       word[1],
       notificationDetails,
