@@ -84,8 +84,8 @@ class _MenuFloatState extends State<MenuFloat>
         IgnorePointer(
           child: Container(
             color: Colors.transparent,
-            height: 280.0,
-            width: 280.0,
+            height: 180.0,
+            width: 180.0,
           ),
         ),
         Transform.translate(
