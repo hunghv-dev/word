@@ -82,13 +82,13 @@ class _HomePageState extends State<HomePage> {
                             decoration: isFocusWord
                                 ? BoxDecoration(
                                     border: Border.all(
-                                        width: 0.1, color: Colors.white),
+                                        width: 0.1, color: ColorUtils.grey),
                                     borderRadius: BorderRadius.circular(10),
                                     gradient: LinearGradient(
                                         colors: [
                                           Colors.white.withOpacity(0.05),
                                           Colors.transparent,
-                                          Colors.white.withOpacity(0.2),
+                                          Colors.white.withOpacity(0.1),
                                         ],
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter),
