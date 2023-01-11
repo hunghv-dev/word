@@ -22,24 +22,25 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
-      radius: 25,
-      child: GestureDetector(
-        onPanUpdate: (details) {
-          _isScrollUp = null;
-          if (details.isDragUp) {
-            setState(() => _isScrollUp = true);
-          }
-          if (details.isDragDown) {
-            setState(() => _isScrollUp = false);
-          }
-        },
-        onPanEnd: (_) {
-          if (_isScrollUp == null) return;
-          if (widget.isWordRemind) return;
-          widget.touchChange.call(_isScrollUp!);
-        },
+    return GestureDetector(
+      onPanUpdate: (details) {
+        _isScrollUp = null;
+        if (details.isDragUp) {
+          setState(() => _isScrollUp = true);
+        }
+        if (details.isDragDown) {
+          setState(() => _isScrollUp = false);
+        }
+      },
+      onPanEnd: (_) {
+        if (_isScrollUp == null) return;
+        if (widget.isWordRemind) return;
+        widget.touchChange.call(_isScrollUp!);
+      },
+      child: CircleAvatar(
+        radius: 25,
+        backgroundColor:
+            widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
         child: Center(child: widget.text),
       ),
     );
