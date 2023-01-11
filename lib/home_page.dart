@@ -5,6 +5,7 @@ import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/empty_page.dart';
 import 'package:word/enum.dart';
+import 'package:word/item_direction.dart';
 import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/string_utils.dart';
 
@@ -48,8 +49,8 @@ class _HomePageState extends State<HomePage> {
         child: BlocListener<WordRemindBloc, WordRemindState>(
           listener: (context, state) {
             if (!state.readFilePermission) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text(StringUtils.readPermissionRemind)));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(StringUtils.readPermissionRemind)));
             }
             if (state.isWordReminding) {
               _scrollController.animateTo(state.wordRemindIndex! * 50,
@@ -69,17 +70,7 @@ class _HomePageState extends State<HomePage> {
                 }
                 return CustomScrollView(
                   slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: const [
-                          Icon(
-                            Icons.arrow_drop_up,
-                            size: 50,
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                    ),
+                    const ItemDirection(icon: Icons.arrow_drop_up),
                     SliverFixedExtentList(
                       delegate: SliverChildBuilderDelegate(
                         (_, index) {
@@ -125,17 +116,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       itemExtent: 50,
                     ),
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: const [
-                          Divider(),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            size: 50,
-                          ),
-                        ],
-                      ),
-                    ),
+                    const ItemDirection(
+                        icon: Icons.arrow_drop_down, isTop: false),
                   ],
                   controller: _scrollController,
                 );
@@ -167,5 +149,4 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
-
 }
