@@ -104,7 +104,7 @@ class _MenuFloatState extends State<MenuFloat>
         ),
         Transform.translate(
           offset: Offset.fromDirection(
-              getRadiansFromDegree(242), translateAnimation.value * 140),
+              getRadiansFromDegree(241), translateAnimation.value * 136),
           child: Transform(
             transform: Matrix4.identity()..scale(translateAnimation.value),
             alignment: Alignment.center,
@@ -125,7 +125,6 @@ class _MenuFloatState extends State<MenuFloat>
                   ),
                   isWordRemind: widget.isWordRemind,
                 ),
-                const SizedBox(width: 5),
                 ItemTimeRange(
                   touchChange: (isScrollUp) => context
                       .read<WordRemindBloc>()
