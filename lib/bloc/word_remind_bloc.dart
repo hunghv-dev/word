@@ -28,6 +28,8 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<TurnWordRemindEvent>(_onTurnWordRemindEvent);
     on<UpdateWordRemindEvent>(_onUpdateWordRemindEvent);
     on<ChangeTimerPeriodEvent>(_onChangeTimerPeriodEvent);
+    on<ChangeStartTimeEvent>(_onChangeStartTimeEvent);
+    on<ChangeEndTimeEvent>(_onChangeEndTimeEvent);
   }
 
   static const _id = 42;
@@ -108,7 +110,11 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     emit(state.copyWith(isWordRemind: true));
     _timer = Timer.periodic(
       Duration(minutes: state.minuteTimerPeriod.minute),
-      (_) => add(UpdateWordRemindEvent()),
+      (_) {
+        final nowHour = DateTime.now().hour;
+        if (nowHour < state.startTime || nowHour > state.endTime) return;
+        add(UpdateWordRemindEvent());
+      },
     );
   }
 
@@ -167,6 +173,18 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       word[1],
       notificationDetails,
     );
+  }
+
+  void _onChangeStartTimeEvent(ChangeStartTimeEvent event, emit) async {
+    final newStartTime = state.startTime + (event.isIncrease ? 1 : -1);
+    if (newStartTime < 0 || newStartTime >= state.endTime) return;
+    emit(state.copyWith(startTime: newStartTime));
+  }
+
+  void _onChangeEndTimeEvent(ChangeEndTimeEvent event, emit) async {
+    final newEndTime = state.endTime + (event.isIncrease ? 1 : -1);
+    if (newEndTime <= state.startTime || newEndTime > 24) return;
+    emit(state.copyWith(endTime: newEndTime));
   }
 
   Future<void> _cancelNotifications() async {

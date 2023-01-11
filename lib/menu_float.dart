@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:word/bloc/word_remind_bloc.dart';
+import 'package:word/item_time_range.dart';
 import 'package:word/utils/color_utils.dart';
 
 class MenuFloat extends StatefulWidget {
@@ -81,8 +84,8 @@ class _MenuFloatState extends State<MenuFloat>
         IgnorePointer(
           child: Container(
             color: Colors.transparent,
-            height: 150.0,
-            width: 150.0,
+            height: 180.0,
+            width: 180.0,
           ),
         ),
         Transform.translate(
@@ -96,6 +99,48 @@ class _MenuFloatState extends State<MenuFloat>
               onPressed: widget.firstTap,
               elevation: 0,
               child: widget.firstIcon,
+            ),
+          ),
+        ),
+        Transform.translate(
+          offset: Offset.fromDirection(
+              getRadiansFromDegree(242), translateAnimation.value * 140),
+          child: Transform(
+            transform: Matrix4.identity()..scale(translateAnimation.value),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ItemTimeRange(
+                  touchChange: (isScrollUp) => context
+                      .read<WordRemindBloc>()
+                      .add(ChangeStartTimeEvent(isScrollUp)),
+                  text: BlocBuilder<WordRemindBloc, WordRemindState>(
+                    builder: (context, state) {
+                      return Text(
+                        state.startTimeLabel,
+                        style: const TextStyle(color: Colors.black),
+                      );
+                    },
+                  ),
+                  isWordRemind: widget.isWordRemind,
+                ),
+                const SizedBox(width: 5),
+                ItemTimeRange(
+                  touchChange: (isScrollUp) => context
+                      .read<WordRemindBloc>()
+                      .add(ChangeEndTimeEvent(isScrollUp)),
+                  text: BlocBuilder<WordRemindBloc, WordRemindState>(
+                    builder: (context, state) {
+                      return Text(
+                        state.endTimeLabel,
+                        style: const TextStyle(color: Colors.black),
+                      );
+                    },
+                  ),
+                  isWordRemind: widget.isWordRemind,
+                ),
+              ],
             ),
           ),
         ),
