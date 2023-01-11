@@ -112,7 +112,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       Duration(minutes: state.minuteTimerPeriod.minute),
       (_) {
         final nowHour = DateTime.now().hour;
-        if (nowHour < state.startTime || nowHour > state.endTime) return;
+        if (nowHour < state.startTime || nowHour >= state.endTime) return;
         add(UpdateWordRemindEvent());
       },
     );
