@@ -33,9 +33,9 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
         }
       },
       onPanEnd: (_) {
-        if (_isScrollUp == null) return;
-        if (widget.isWordRemind) return;
+        if (_isScrollUp == null || widget.isWordRemind) return;
         widget.touchChange?.call(_isScrollUp!);
+        setState(() => _isScrollUp = null);
       },
       child: CircleAvatar(
         radius: 25,
