@@ -12,9 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word/app.dart';
 import 'package:word/enum.dart';
 import 'package:word/utils/string_utils.dart';
+
+import '../main.dart';
 
 part 'word_remind_event.dart';
 
