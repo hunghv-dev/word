@@ -15,7 +15,15 @@ class StringUtils {
   static const String textStep2 = '2';
   static const String textUseCaseStep2 = 'Import that created file to App';
   static const String textStep3 = '3';
-  static const String textUseCaseStep3 =
-      'Change timer for push remind notification';
+  static const String textTap = 'Tap';
+  static const String textUseCaseStep3 = 'change timer duration';
+  static const String textStep4 = '4';
+  static const String textUseCaseStep4First = 'Touch up/down';
+  static const String textUseCaseStep4Second = 'change timer period';
+  static const String textStep5 = '5';
+  static const String textUseCaseStep5 = 'start/stop timer';
   static const String titleRunningApp = 'Running';
+  static const String textTime1M = '1m';
+  static const String textTime0H = '0h';
+  static const String textTime24H = '24h';
 }

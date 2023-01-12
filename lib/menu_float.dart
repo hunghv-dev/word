@@ -104,7 +104,7 @@ class _MenuFloatState extends State<MenuFloat>
         ),
         Transform.translate(
           offset: Offset.fromDirection(
-              getRadiansFromDegree(241), translateAnimation.value * 136),
+              getRadiansFromDegree(239), translateAnimation.value * 138),
           child: Transform(
             transform: Matrix4.identity()..scale(translateAnimation.value),
             alignment: Alignment.center,

@@ -3,14 +3,14 @@ import 'package:word/utils/color_utils.dart';
 
 class ItemStepper extends StatelessWidget {
   final String index;
-  final String title;
+  final Widget title;
 
   const ItemStepper({super.key, required this.index, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5, left: 30.0),
+      padding: const EdgeInsets.only(top: 5, left: 20.0, right: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -34,7 +34,7 @@ class ItemStepper extends StatelessWidget {
                 ),
               ),
             ),
-            child: Text(title),
+            child: title,
           ),
         ],
       ),

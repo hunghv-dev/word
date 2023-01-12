@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word/item_stepper.dart';
+import 'package:word/item_time_range.dart';
+import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/string_utils.dart';
 
 class EmptyPage extends StatefulWidget {
@@ -47,16 +49,66 @@ class _EmptyPageState extends State<EmptyPage>
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           const Divider(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           const ItemStepper(
               index: StringUtils.textStep1,
-              title: StringUtils.textUseCaseStep1),
+              title: Text(StringUtils.textUseCaseStep1)),
           const ItemStepper(
               index: StringUtils.textStep2,
-              title: StringUtils.textUseCaseStep2),
-          const ItemStepper(
-              index: StringUtils.textStep3,
-              title: StringUtils.textUseCaseStep3),
+              title: Text(StringUtils.textUseCaseStep2)),
+          ItemStepper(
+            index: StringUtils.textStep3,
+            title: Row(
+              children: const [
+                Text(StringUtils.textTap),
+                SizedBox(width: 5),
+                FloatingActionButton.extended(
+                    backgroundColor: ColorUtils.blue,
+                    onPressed: null,
+                    elevation: 0,
+                    label: Text(StringUtils.textTime1M),
+                    icon: Icon(Icons.timer_outlined)),
+                SizedBox(width: 5),
+                Text(StringUtils.textUseCaseStep3),
+              ],
+            ),
+          ),
+          ItemStepper(
+            index: StringUtils.textStep4,
+            title: Row(
+              children: [
+                const Text(StringUtils.textUseCaseStep4First),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    ItemTimeRange(
+                        text: Text(StringUtils.textTime0H,
+                            style: TextStyle(color: Colors.black)),
+                        isWordRemind: false),
+                    ItemTimeRange(
+                        text: Text(StringUtils.textTime24H,
+                            style: TextStyle(color: Colors.black)),
+                        isWordRemind: false),
+                  ],
+                ),
+                const Text(StringUtils.textUseCaseStep4Second),
+              ],
+            ),
+          ),
+          ItemStepper(
+            index: StringUtils.textStep5,
+            title: Row(
+              children: const [
+                Text(StringUtils.textTap),
+                FloatingActionButton(
+                    backgroundColor: ColorUtils.blue,
+                    onPressed: null,
+                    elevation: 0,
+                    child: Icon(Icons.add_alert_outlined)),
+                Text(StringUtils.textUseCaseStep5),
+              ],
+            ),
+          ),
         ],
       ),
     );

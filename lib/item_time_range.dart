@@ -3,13 +3,13 @@ import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/ext.dart';
 
 class ItemTimeRange extends StatefulWidget {
-  final ValueChanged<bool> touchChange;
+  final ValueChanged<bool>? touchChange;
   final Widget text;
   final bool isWordRemind;
 
   const ItemTimeRange(
       {super.key,
-      required this.touchChange,
+      this.touchChange,
       required this.text,
       required this.isWordRemind});
 
@@ -35,7 +35,7 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
       onPanEnd: (_) {
         if (_isScrollUp == null) return;
         if (widget.isWordRemind) return;
-        widget.touchChange.call(_isScrollUp!);
+        widget.touchChange?.call(_isScrollUp!);
       },
       child: CircleAvatar(
         radius: 25,
