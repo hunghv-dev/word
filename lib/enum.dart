@@ -4,6 +4,8 @@ enum MinuteTimerPeriod {
   fifteenMinute,
   thirtyMinute,
   oneHour,
+  twoHour,
+  threeHour,
 }
 
 extension MinuteTimerPeriodExt on MinuteTimerPeriod {
@@ -23,6 +25,10 @@ extension MinuteTimerPeriodExt on MinuteTimerPeriod {
         return '30m';
       case 4:
         return '60m';
+      case 5:
+        return '120m';
+      case 6:
+        return '180m';
       default:
         return '1m';
     }
@@ -40,6 +46,10 @@ extension MinuteTimerPeriodExt on MinuteTimerPeriod {
         return 30;
       case 4:
         return 60;
+      case 5:
+        return 120;
+      case 6:
+        return 180;
       default:
         return 1;
     }

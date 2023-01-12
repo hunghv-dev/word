@@ -38,7 +38,7 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
         setState(() => _isScrollUp = null);
       },
       child: CircleAvatar(
-        radius: 25,
+        radius: 23,
         backgroundColor:
             widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
         child: Center(child: widget.text),

@@ -104,58 +104,55 @@ class _MenuFloatState extends State<MenuFloat>
         ),
         Transform.translate(
           offset: Offset.fromDirection(
-              getRadiansFromDegree(239), translateAnimation.value * 138),
-          child: Transform(
-            transform: Matrix4.identity()..scale(translateAnimation.value),
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ItemTimeRange(
-                  touchChange: (isScrollUp) => context
-                      .read<WordRemindBloc>()
-                      .add(ChangeStartTimeEvent(isScrollUp)),
-                  text: BlocBuilder<WordRemindBloc, WordRemindState>(
-                    builder: (context, state) {
-                      return Text(
-                        state.startTimeLabel,
-                        style: const TextStyle(color: Colors.black),
-                      );
-                    },
-                  ),
-                  isWordRemind: widget.isWordRemind,
-                ),
-                ItemTimeRange(
-                  touchChange: (isScrollUp) => context
-                      .read<WordRemindBloc>()
-                      .add(ChangeEndTimeEvent(isScrollUp)),
-                  text: BlocBuilder<WordRemindBloc, WordRemindState>(
-                    builder: (context, state) {
-                      return Text(
-                        state.endTimeLabel,
-                        style: const TextStyle(color: Colors.black),
-                      );
-                    },
-                  ),
-                  isWordRemind: widget.isWordRemind,
-                ),
-              ],
-            ),
-          ),
-        ),
-        Transform.translate(
-          offset: Offset.fromDirection(
               getRadiansFromDegree(225), translateAnimation.value * 100),
           child: Transform(
             transform: Matrix4.identity()..scale(translateAnimation.value),
             alignment: Alignment.center,
-            child: FloatingActionButton.extended(
-                backgroundColor:
-                    widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
-                onPressed: widget.isWordRemind ? null : widget.secondTap,
-                elevation: 0,
-                label: Text(widget.periodLabel),
-                icon: widget.secondIcon),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ItemTimeRange(
+                      touchChange: (isScrollUp) => context
+                          .read<WordRemindBloc>()
+                          .add(ChangeStartTimeEvent(isScrollUp)),
+                      text: BlocBuilder<WordRemindBloc, WordRemindState>(
+                        builder: (context, state) {
+                          return Text(
+                            state.startTimeLabel,
+                            style: const TextStyle(color: Colors.black),
+                          );
+                        },
+                      ),
+                      isWordRemind: widget.isWordRemind,
+                    ),
+                    ItemTimeRange(
+                      touchChange: (isScrollUp) => context
+                          .read<WordRemindBloc>()
+                          .add(ChangeEndTimeEvent(isScrollUp)),
+                      text: BlocBuilder<WordRemindBloc, WordRemindState>(
+                        builder: (context, state) {
+                          return Text(
+                            state.endTimeLabel,
+                            style: const TextStyle(color: Colors.black),
+                          );
+                        },
+                      ),
+                      isWordRemind: widget.isWordRemind,
+                    ),
+                  ],
+                ),
+                FloatingActionButton.extended(
+                    backgroundColor:
+                        widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
+                    onPressed: widget.isWordRemind ? null : widget.secondTap,
+                    elevation: 0,
+                    label: Text(widget.periodLabel),
+                    icon: widget.secondIcon),
+              ],
+            ),
           ),
         ),
         Transform.translate(
