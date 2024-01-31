@@ -1,42 +1,47 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
-import 'package:word/empty_page.dart';
-import 'package:word/enum.dart';
-import 'package:word/item_direction.dart';
+import 'package:word/pages/empty_page.dart';
 import 'package:word/utils/color_utils.dart';
+import 'package:word/utils/enum.dart';
 import 'package:word/utils/string_utils.dart';
+import 'package:word/widgets/item_direction.dart';
 
+import '../di.dart';
+import '../widgets/menu_float.dart';
 import 'loading_page.dart';
-import 'menu_float.dart';
 
-class HomePage extends StatefulWidget {
+@RoutePage()
+class HomePage extends StatefulWidget implements AutoRouteWrapper {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) =>
+      BlocProvider(create: (_) => getIt<WordRemindBloc>(), child: this);
 }
 
 class _HomePageState extends State<HomePage> {
   bool isTurnOnNotification = false;
-  late WordRemindBloc _bloc;
   late ScrollController _scrollController;
+  late final _bloc = context.read<WordRemindBloc>();
 
   @override
   void initState() {
     super.initState();
-    _bloc = context.read<WordRemindBloc>()..add(LoadCSVFileEvent());
+    _bloc.add(const WordRemindEvent.loadCSVFile());
     _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _bloc.dispose();
     super.dispose();
   }
 
@@ -127,7 +132,8 @@ class _HomePageState extends State<HomePage> {
               builder: (context, state) {
                 if (state.wordList.isEmpty) {
                   return FloatingActionButton(
-                    onPressed: () => _bloc.add(PickCSVFileEvent()),
+                    onPressed: () =>
+                        _bloc.add(const WordRemindEvent.pickCSVFile()),
                     backgroundColor: ColorUtils.blue,
                     child: const Icon(
                       Icons.add,
@@ -136,11 +142,14 @@ class _HomePageState extends State<HomePage> {
                 }
                 return MenuFloat(
                   firstIcon: const Icon(Icons.add_alert_outlined),
-                  firstTap: () => _bloc.add(TurnWordRemindEvent()),
+                  firstTap: () =>
+                      _bloc.add(const WordRemindEvent.turnWordRemind()),
                   secondIcon: const Icon(Icons.timer_outlined),
-                  secondTap: () => _bloc.add(ChangeTimerPeriodEvent()),
+                  secondTap: () =>
+                      _bloc.add(const WordRemindEvent.changeTimerPeriod()),
                   thirdIcon: const Icon(Icons.delete_forever_outlined),
-                  thirdTap: () => _bloc.add(ClearCSVFileEvent()),
+                  thirdTap: () =>
+                      _bloc.add(const WordRemindEvent.clearCSVFile()),
                   periodLabel: state.minuteTimerPeriod.label,
                   isWordRemind: state.isWordRemind,
                 );

@@ -14,7 +14,7 @@ class ItemTimeRange extends StatefulWidget {
       required this.isWordRemind});
 
   @override
-  _ItemTimeRangeState createState() => _ItemTimeRangeState();
+  State<ItemTimeRange> createState() => _ItemTimeRangeState();
 }
 
 class _ItemTimeRangeState extends State<ItemTimeRange> {

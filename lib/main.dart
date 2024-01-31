@@ -7,8 +7,11 @@ import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
-import 'package:word/home_page.dart';
+import 'package:word/pages/home_page.dart';
 import 'package:word/utils/color_utils.dart';
+
+import 'app_router.dart';
+import 'di.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -25,6 +28,7 @@ Future<void> main() async {
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
   );
+  configureDependencies();
   runApp(DevicePreview(
     enabled: false,
     tools: const [...DevicePreview.defaultTools],
@@ -39,15 +43,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: ColorUtils.background,
       ),
-      home: BlocProvider(
-        create: (context) => WordRemindBloc(),
-        child: const HomePage(),
-      ),
+      routerConfig: getIt<AppRouter>().config(),
     );
   }
 }

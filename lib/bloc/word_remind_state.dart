@@ -1,35 +1,19 @@
 part of 'word_remind_bloc.dart';
 
-class WordRemindState {
-  final List<List<dynamic>> wordList;
-  final bool readFilePermission;
-  final bool isWordRemind;
-  final int? wordRemindIndex;
-  final MinuteTimerPeriod minuteTimerPeriod;
-  final int startTime;
-  final int endTime;
-  final bool isLoading;
+@freezed
+class WordRemindState with _$WordRemindState {
+  const WordRemindState._();
 
-  WordRemindState.initial()
-      : wordList = [],
-        readFilePermission = true,
-        isWordRemind = false,
-        wordRemindIndex = null,
-        minuteTimerPeriod = MinuteTimerPeriod.oneMinute,
-        startTime = 0,
-        endTime = 24,
-        isLoading = true;
-
-  WordRemindState(
-    this.wordList,
-    this.readFilePermission,
-    this.isWordRemind,
-    this.wordRemindIndex,
-    this.minuteTimerPeriod,
-    this.startTime,
-    this.endTime,
-    this.isLoading,
-  );
+  const factory WordRemindState({
+    @Default([]) List<List<dynamic>> wordList,
+    @Default(true) bool readFilePermission,
+    @Default(false) bool isWordRemind,
+    int? wordRemindIndex,
+    @Default(MinuteTimerPeriod.oneMinute) MinuteTimerPeriod minuteTimerPeriod,
+    @Default(0) int startTime,
+    @Default(24) int endTime,
+    @Default(true) bool isLoading,
+  }) = _WordRemindState;
 
   bool get isWordReminding => isWordRemind && wordRemindIndex != null;
 
@@ -39,36 +23,8 @@ class WordRemindState {
 
   String get endTimeLabel => '${endTime}h';
 
-  WordRemindState copyWith(
-          {List<List<dynamic>>? wordList,
-          bool? readFilePermission,
-          bool? isWordRemind,
-          int? wordRemindIndex,
-          MinuteTimerPeriod? minuteTimerPeriod,
-          int? startTime,
-          int? endTime,
-          bool? isLoading}) =>
-      WordRemindState(
-        wordList ?? this.wordList,
-        readFilePermission ?? this.readFilePermission,
-        isWordRemind ?? this.isWordRemind,
-        wordRemindIndex ?? this.wordRemindIndex,
-        minuteTimerPeriod ?? this.minuteTimerPeriod,
-        startTime ?? this.startTime,
-        endTime ?? this.endTime,
-        isLoading ?? this.isLoading,
-      );
+  WordRemindState turnOff() =>
+      copyWith(isWordRemind: false, wordRemindIndex: null, isLoading: false);
 
-  WordRemindState turnOffWordRemind() => WordRemindState(
-        wordList,
-        readFilePermission,
-        false,
-        null,
-        minuteTimerPeriod,
-        startTime,
-        endTime,
-        false,
-      );
-
-  WordRemindState clearWordList() => turnOffWordRemind().copyWith(wordList: []);
+  WordRemindState clearWordList() => turnOff().copyWith(wordList: []);
 }

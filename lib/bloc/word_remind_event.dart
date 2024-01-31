@@ -1,28 +1,21 @@
 part of 'word_remind_bloc.dart';
 
-@immutable
-abstract class WordRemindEvent {}
+@freezed
+class WordRemindEvent with _$WordRemindEvent {
+  const factory WordRemindEvent.pickCSVFile() = _PickCSVFile;
 
-class PickCSVFileEvent extends WordRemindEvent {}
+  const factory WordRemindEvent.loadCSVFile() = _LoadCSVFile;
 
-class LoadCSVFileEvent extends WordRemindEvent {}
+  const factory WordRemindEvent.clearCSVFile() = _ClearCSVFile;
 
-class ClearCSVFileEvent extends WordRemindEvent {}
+  const factory WordRemindEvent.turnWordRemind() = _TurnWordRemind;
 
-class TurnWordRemindEvent extends WordRemindEvent {}
+  const factory WordRemindEvent.updateWordRemind() = _UpdateWordRemind;
 
-class UpdateWordRemindEvent extends WordRemindEvent {}
+  const factory WordRemindEvent.changeTimerPeriod() = _ChangeTimerPeriod;
 
-class ChangeTimerPeriodEvent extends WordRemindEvent {}
+  const factory WordRemindEvent.changeStartTime(bool isIncrease) =
+      _ChangeStartTime;
 
-class ChangeStartTimeEvent extends WordRemindEvent {
-  final bool isIncrease;
-
-  ChangeStartTimeEvent(this.isIncrease);
-}
-
-class ChangeEndTimeEvent extends WordRemindEvent {
-  final bool isIncrease;
-
-  ChangeEndTimeEvent(this.isIncrease);
+  const factory WordRemindEvent.changeEndTime(bool isIncrease) = _ChangeEndTime;
 }

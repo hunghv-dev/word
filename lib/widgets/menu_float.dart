@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
-import 'package:word/item_time_range.dart';
+import 'package:word/widgets/item_time_range.dart';
 import 'package:word/utils/color_utils.dart';
 
 class MenuFloat extends StatefulWidget {
@@ -117,7 +117,7 @@ class _MenuFloatState extends State<MenuFloat>
                     ItemTimeRange(
                       touchChange: (isScrollUp) => context
                           .read<WordRemindBloc>()
-                          .add(ChangeStartTimeEvent(isScrollUp)),
+                          .add(WordRemindEvent.changeStartTime(isScrollUp)),
                       text: BlocBuilder<WordRemindBloc, WordRemindState>(
                         builder: (context, state) {
                           return Text(
@@ -131,7 +131,7 @@ class _MenuFloatState extends State<MenuFloat>
                     ItemTimeRange(
                       touchChange: (isScrollUp) => context
                           .read<WordRemindBloc>()
-                          .add(ChangeEndTimeEvent(isScrollUp)),
+                          .add(WordRemindEvent.changeEndTime(isScrollUp)),
                       text: BlocBuilder<WordRemindBloc, WordRemindState>(
                         builder: (context, state) {
                           return Text(

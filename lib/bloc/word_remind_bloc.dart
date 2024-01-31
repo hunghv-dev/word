@@ -5,14 +5,15 @@ import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word/enum.dart';
+import 'package:word/utils/enum.dart';
 import 'package:word/utils/string_utils.dart';
 
 import '../main.dart';
@@ -21,16 +22,19 @@ part 'word_remind_event.dart';
 
 part 'word_remind_state.dart';
 
+part 'word_remind_bloc.freezed.dart';
+
+@injectable
 class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
-  WordRemindBloc() : super(WordRemindState.initial()) {
-    on<LoadCSVFileEvent>(_onLoadCSVFileEvent);
-    on<PickCSVFileEvent>(_onPickCSVFileEvent);
-    on<ClearCSVFileEvent>(_onClearCSVFileEvent);
-    on<TurnWordRemindEvent>(_onTurnWordRemindEvent);
-    on<UpdateWordRemindEvent>(_onUpdateWordRemindEvent);
-    on<ChangeTimerPeriodEvent>(_onChangeTimerPeriodEvent);
-    on<ChangeStartTimeEvent>(_onChangeStartTimeEvent);
-    on<ChangeEndTimeEvent>(_onChangeEndTimeEvent);
+  WordRemindBloc() : super(const WordRemindState()) {
+    on<_LoadCSVFile>(_onLoadCSVFileEvent);
+    on<_PickCSVFile>(_onPickCSVFileEvent);
+    on<_ClearCSVFile>(_onClearCSVFileEvent);
+    on<_TurnWordRemind>(_onTurnWordRemindEvent);
+    on<_UpdateWordRemind>(_onUpdateWordRemindEvent);
+    on<_ChangeTimerPeriod>(_onChangeTimerPeriodEvent);
+    on<_ChangeStartTime>(_onChangeStartTimeEvent);
+    on<_ChangeEndTime>(_onChangeEndTimeEvent);
   }
 
   static const _id = 42;
@@ -41,7 +45,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     return state.wordList[randomIndex];
   }
 
-  void _onLoadCSVFileEvent(event, emit) async {
+  void _onLoadCSVFileEvent(_, emit) async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final path = sharedPreferences.getString(StringUtils.tagSpfCsvFilePath);
     if (path == null) {
@@ -52,7 +56,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     emit(state.copyWith(wordList: listData, isLoading: false));
   }
 
-  void _onPickCSVFileEvent(event, emit) async {
+  void _onPickCSVFileEvent(_, emit) async {
     emit(state.copyWith(isLoading: true));
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -74,7 +78,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     }
   }
 
-  void _onClearCSVFileEvent(event, emit) async {
+  void _onClearCSVFileEvent(_, emit) async {
     _timer?.cancel();
     await FilePicker.platform.clearTemporaryFiles();
     await _clearPathToSharedPreferences();
@@ -94,7 +98,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     return hasPermissions;
   }
 
-  void _onTurnWordRemindEvent(event, emit) async {
+  void _onTurnWordRemindEvent(_, emit) async {
     final hasPermission = await _checkBackgroundPermission(emit);
     if (!hasPermission) return;
 
@@ -102,7 +106,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     if (state.isWordRemind) {
       final isDisable = await FlutterBackground.disableBackgroundExecution();
       if (!isDisable) return;
-      emit(state.turnOffWordRemind());
+      emit(state.turnOff());
       await _cancelNotifications();
       return;
     }
@@ -114,7 +118,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       (_) {
         final nowHour = DateTime.now().hour;
         if (nowHour < state.startTime || nowHour >= state.endTime) return;
-        add(UpdateWordRemindEvent());
+        add(const WordRemindEvent.updateWordRemind());
       },
     );
   }
@@ -128,7 +132,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
         state.copyWith(wordRemindIndex: state.wordList.indexOf(randomWord))));
   }
 
-  void _onChangeTimerPeriodEvent(event, emit) async {
+  void _onChangeTimerPeriodEvent(_, emit) async {
     emit(state.copyWith(minuteTimerPeriod: state.minuteTimerPeriod.increase));
   }
 
@@ -176,13 +180,13 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     );
   }
 
-  void _onChangeStartTimeEvent(ChangeStartTimeEvent event, emit) async {
+  void _onChangeStartTimeEvent(_ChangeStartTime event, emit) async {
     final newStartTime = state.startTime + (event.isIncrease ? 1 : -1);
     if (newStartTime < 0 || newStartTime >= state.endTime) return;
     emit(state.copyWith(startTime: newStartTime));
   }
 
-  void _onChangeEndTimeEvent(ChangeEndTimeEvent event, emit) async {
+  void _onChangeEndTimeEvent(_ChangeEndTime event, emit) async {
     final newEndTime = state.endTime + (event.isIncrease ? 1 : -1);
     if (newEndTime <= state.startTime || newEndTime > 24) return;
     emit(state.copyWith(endTime: newEndTime));

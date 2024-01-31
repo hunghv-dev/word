@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:word/item_stepper.dart';
-import 'package:word/item_time_range.dart';
 import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/string_utils.dart';
+import 'package:word/widgets/item_stepper.dart';
+import 'package:word/widgets/item_time_range.dart';
 
 class EmptyPage extends StatefulWidget {
   const EmptyPage({Key? key}) : super(key: key);
