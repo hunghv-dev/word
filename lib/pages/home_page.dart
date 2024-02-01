@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:base_define/base_define.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/pages/empty_page.dart';
-import 'package:word/utils/color_utils.dart';
-import 'package:word/utils/enum.dart';
 import 'package:word/utils/string_utils.dart';
 import 'package:word/widgets/item_direction.dart';
 
@@ -87,7 +86,8 @@ class _HomePageState extends State<HomePage> {
                             decoration: isFocusWord
                                 ? BoxDecoration(
                                     border: Border.all(
-                                        width: 0.1, color: ColorUtils.grey),
+                                        width: 0.1,
+                                        color: ColorsDefine.grey().color),
                                     borderRadius: BorderRadius.circular(10),
                                     gradient: LinearGradient(
                                         colors: [
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                   return FloatingActionButton(
                     onPressed: () =>
                         _bloc.add(const WordRemindEvent.pickCSVFile()),
-                    backgroundColor: ColorUtils.blue,
+                    backgroundColor: ColorsDefine.blue().color,
                     child: const Icon(
                       Icons.add,
                     ),

@@ -1,14 +1,10 @@
 import 'dart:async';
 
+import 'package:base_define/base_define.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_background/flutter_background.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:word/bloc/word_remind_bloc.dart';
-import 'package:word/pages/home_page.dart';
-import 'package:word/utils/color_utils.dart';
 
 import 'app_router.dart';
 import 'di.dart';
@@ -46,7 +42,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: ColorUtils.background,
+        scaffoldBackgroundColor: ColorsDefine.background().color,
       ),
       routerConfig: getIt<AppRouter>().config(),
     );

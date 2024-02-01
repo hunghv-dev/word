@@ -1,5 +1,5 @@
+import 'package:base_define/base_define.dart';
 import 'package:flutter/material.dart';
-import 'package:word/utils/color_utils.dart';
 
 class ItemStepper extends StatelessWidget {
   final String index;
@@ -18,7 +18,7 @@ class ItemStepper extends StatelessWidget {
             backgroundColor: Colors.white,
             radius: 10,
             child: Text(index,
-                style: const TextStyle(color: ColorUtils.background)),
+                style: const TextStyle().c(ColorsDefine.background())),
           ),
           Container(
             width: double.infinity,

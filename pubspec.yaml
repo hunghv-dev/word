@@ -27,13 +27,19 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter:
+    sdk: flutter
+
+  # Base define package
+  base_define:
+    git:
+      url: https://github.com/hunghv-dev/base_define.git
+      ref: master
+
   auto_route: 7.8.0
   csv: ^5.0.1
   device_preview: ^1.1.0
   file_picker: ^5.2.4
-  flutter:
-    sdk: flutter
-
   flutter_background: ^1.1.0
   flutter_bloc: ^8.1.1
   flutter_launcher_icons: ^0.11.0

@@ -1,8 +1,8 @@
+import 'package:base_define/base_define.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/widgets/item_time_range.dart';
-import 'package:word/utils/color_utils.dart';
 
 class MenuFloat extends StatefulWidget {
   final Icon firstIcon;
@@ -94,8 +94,10 @@ class _MenuFloatState extends State<MenuFloat>
           child: Transform(
             transform: Matrix4.identity()..scale(translateAnimation.value),
             child: FloatingActionButton(
-              backgroundColor:
-                  widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
+              backgroundColor: (widget.isWordRemind
+                      ? ColorsDefine.green()
+                      : ColorsDefine.blue())
+                  .color,
               onPressed: widget.firstTap,
               elevation: 0,
               child: widget.firstIcon,
@@ -145,8 +147,10 @@ class _MenuFloatState extends State<MenuFloat>
                   ],
                 ),
                 FloatingActionButton.extended(
-                    backgroundColor:
-                        widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
+                    backgroundColor: (widget.isWordRemind
+                            ? ColorsDefine.grey()
+                            : ColorsDefine.blue())
+                        .color,
                     onPressed: widget.isWordRemind ? null : widget.secondTap,
                     elevation: 0,
                     label: Text(widget.periodLabel),
@@ -161,8 +165,10 @@ class _MenuFloatState extends State<MenuFloat>
           child: Transform(
             transform: Matrix4.identity()..scale(translateAnimation.value),
             child: FloatingActionButton(
-                backgroundColor:
-                    widget.isWordRemind ? ColorUtils.grey : ColorUtils.red,
+                backgroundColor: (widget.isWordRemind
+                        ? ColorsDefine.grey()
+                        : ColorsDefine.red())
+                    .color,
                 onPressed: widget.isWordRemind ? null : widget.thirdTap,
                 elevation: 0,
                 child: widget.thirdIcon),
@@ -170,7 +176,8 @@ class _MenuFloatState extends State<MenuFloat>
         ),
         FloatingActionButton(
           backgroundColor:
-              widget.isWordRemind ? ColorUtils.green : ColorUtils.blue,
+              (widget.isWordRemind ? ColorsDefine.green() : ColorsDefine.blue())
+                  .color,
           onPressed: _toggleMenu,
           child: widget.isWordRemind
               ? widget.firstIcon

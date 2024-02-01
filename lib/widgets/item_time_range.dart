@@ -1,5 +1,5 @@
+import 'package:base_define/base_define.dart';
 import 'package:flutter/material.dart';
-import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/ext.dart';
 
 class ItemTimeRange extends StatefulWidget {
@@ -40,7 +40,8 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
       child: CircleAvatar(
         radius: 23,
         backgroundColor:
-            widget.isWordRemind ? ColorUtils.grey : ColorUtils.blue,
+            (widget.isWordRemind ? ColorsDefine.grey() : ColorsDefine.blue())
+                .color,
         child: Center(child: widget.text),
       ),
     );

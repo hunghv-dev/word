@@ -9,7 +9,7 @@ class WordRemindState with _$WordRemindState {
     @Default(true) bool readFilePermission,
     @Default(false) bool isWordRemind,
     int? wordRemindIndex,
-    @Default(MinuteTimerPeriod.oneMinute) MinuteTimerPeriod minuteTimerPeriod,
+    @Default(MinuteTimer.oneMinute) MinuteTimer minuteTimerPeriod,
     @Default(0) int startTime,
     @Default(24) int endTime,
     @Default(true) bool isLoading,

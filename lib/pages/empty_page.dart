@@ -1,5 +1,5 @@
+import 'package:base_define/base_define.dart';
 import 'package:flutter/material.dart';
-import 'package:word/utils/color_utils.dart';
 import 'package:word/utils/string_utils.dart';
 import 'package:word/widgets/item_stepper.dart';
 import 'package:word/widgets/item_time_range.dart';
@@ -59,11 +59,11 @@ class _EmptyPageState extends State<EmptyPage>
           ItemStepper(
             index: StringUtils.textStep3,
             title: Row(
-              children: const [
-                Text(StringUtils.textTap),
+              children: [
+                const Text(StringUtils.textTap),
                 SizedBox(width: 5),
                 FloatingActionButton.extended(
-                    backgroundColor: ColorUtils.blue,
+                    backgroundColor: ColorsDefine.blue().color,
                     onPressed: null,
                     elevation: 0,
                     label: Text(StringUtils.textTime1M),
@@ -98,10 +98,10 @@ class _EmptyPageState extends State<EmptyPage>
           ItemStepper(
             index: StringUtils.textStep5,
             title: Row(
-              children: const [
+              children: [
                 Text(StringUtils.textTap),
                 FloatingActionButton(
-                    backgroundColor: ColorUtils.blue,
+                    backgroundColor: ColorsDefine.blue().color,
                     onPressed: null,
                     elevation: 0,
                     child: Icon(Icons.add_alert_outlined)),

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
+import 'package:base_define/base_define.dart';
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
@@ -13,16 +13,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word/utils/enum.dart';
 import 'package:word/utils/string_utils.dart';
 
+import '../entities/minute_timer.dart';
 import '../main.dart';
-
-part 'word_remind_event.dart';
-
-part 'word_remind_state.dart';
+import '../utils/define.dart';
 
 part 'word_remind_bloc.freezed.dart';
+part 'word_remind_event.dart';
+part 'word_remind_state.dart';
 
 @injectable
 class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
@@ -37,13 +36,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<_ChangeEndTime>(_onChangeEndTimeEvent);
   }
 
-  static const _id = 42;
   Timer? _timer;
-
-  List<dynamic> get _randomWord {
-    final randomIndex = Random().nextInt(state.wordList.length);
-    return state.wordList[randomIndex];
-  }
 
   void _onLoadCSVFileEvent(_, emit) async {
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -124,7 +117,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   }
 
   void _onUpdateWordRemindEvent(event, emit) async {
-    final randomWord = _randomWord;
+    final randomWord = state.wordList.randomItem;
     await Future.wait([
       _cancelNotifications(),
       _showNotification(randomWord),
@@ -173,7 +166,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
-      _id,
+      Define.localNotificationsId,
       word[0],
       word[1],
       notificationDetails,
