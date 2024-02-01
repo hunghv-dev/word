@@ -13,7 +13,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word/utils/string_utils.dart';
+import 'package:word/resources/string_utils.dart';
 
 import '../entities/minute_timer.dart';
 import '../main.dart';

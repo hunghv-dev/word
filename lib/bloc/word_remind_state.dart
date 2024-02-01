@@ -10,8 +10,8 @@ class WordRemindState with _$WordRemindState {
     @Default(false) bool isWordRemind,
     int? wordRemindIndex,
     @Default(MinuteTimer.oneMinute) MinuteTimer minuteTimerPeriod,
-    @Default(0) int startTime,
-    @Default(24) int endTime,
+    @Default(Define.startDay) int startTime,
+    @Default(Define.endDay) int endTime,
     @Default(true) bool isLoading,
   }) = _WordRemindState;
 

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/pages/empty_page.dart';
-import 'package:word/utils/string_utils.dart';
+import 'package:word/resources/string_utils.dart';
 import 'package:word/widgets/item_direction.dart';
 
 import '../di.dart';

@@ -1,6 +1,6 @@
 import 'package:base_define/base_define.dart';
 import 'package:flutter/material.dart';
-import 'package:word/utils/string_utils.dart';
+import 'package:word/resources/string_utils.dart';
 import 'package:word/widgets/item_stepper.dart';
 import 'package:word/widgets/item_time_range.dart';
 
