@@ -1,8 +1,11 @@
 import 'package:base_define/base_define.dart';
+import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word/resources/string_utils.dart';
 import 'package:word/widgets/item_stepper.dart';
-import 'package:word/widgets/item_time_range.dart';
+
+import '../utils/define.dart';
 
 class EmptyPage extends StatefulWidget {
   const EmptyPage({Key? key}) : super(key: key);
@@ -38,18 +41,15 @@ class _EmptyPageState extends State<EmptyPage>
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 50),
+          Spacing.h50,
           RotationTransition(
             turns: _rotationAnimation,
             child: const Icon(Icons.access_alarm_outlined, size: 100),
           ),
-          const SizedBox(height: 20),
-          const Text(
-            StringUtils.appTitle,
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+          Spacing.h20,
+          Text(Define.appTitle, style: const TextStyle().s30.w700),
           const Divider(),
-          const SizedBox(height: 10),
+          Spacing.h10,
           const ItemStepper(
               index: StringUtils.textStep1,
               title: Text(StringUtils.textUseCaseStep1)),
@@ -61,15 +61,15 @@ class _EmptyPageState extends State<EmptyPage>
             title: Row(
               children: [
                 const Text(StringUtils.textTap),
-                SizedBox(width: 5),
+                Spacing.w5,
                 FloatingActionButton.extended(
                     backgroundColor: ColorsDefine.blue().color,
                     onPressed: null,
                     elevation: 0,
-                    label: Text(StringUtils.textTime1M),
-                    icon: Icon(Icons.timer_outlined)),
-                SizedBox(width: 5),
-                Text(StringUtils.textUseCaseStep3),
+                    label: const Text(StringUtils.textTime1M),
+                    icon: const Icon(Icons.timer_outlined)),
+                Spacing.w5,
+                const Text(StringUtils.textUseCaseStep3),
               ],
             ),
           ),
@@ -80,15 +80,17 @@ class _EmptyPageState extends State<EmptyPage>
                 const Text(StringUtils.textUseCaseStep4First),
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    ItemTimeRange(
-                        text: Text(StringUtils.textTime0H,
-                            style: TextStyle(color: Colors.black)),
-                        isWordRemind: false),
-                    ItemTimeRange(
-                        text: Text(StringUtils.textTime24H,
-                            style: TextStyle(color: Colors.black)),
-                        isWordRemind: false),
+                  children: [
+                    FloatingActionButton(
+                        backgroundColor: ColorsDefine.blue().color,
+                        onPressed: null,
+                        elevation: 0,
+                        child: const Text(StringUtils.textTime0H)),
+                    FloatingActionButton(
+                        backgroundColor: ColorsDefine.blue().color,
+                        onPressed: null,
+                        elevation: 0,
+                        child: const Text(StringUtils.textTime24H)),
                   ],
                 ),
                 const Text(StringUtils.textUseCaseStep4Second),
@@ -99,13 +101,13 @@ class _EmptyPageState extends State<EmptyPage>
             index: StringUtils.textStep5,
             title: Row(
               children: [
-                Text(StringUtils.textTap),
+                const Text(StringUtils.textTap),
                 FloatingActionButton(
                     backgroundColor: ColorsDefine.blue().color,
-                    onPressed: null,
+                    onPressed: context.read<ThemeCubit>().toggleTheme,
                     elevation: 0,
-                    child: Icon(Icons.add_alert_outlined)),
-                Text(StringUtils.textUseCaseStep5),
+                    child: const Icon(Icons.add_alert_outlined)),
+                const Text(StringUtils.textUseCaseStep5),
               ],
             ),
           ),

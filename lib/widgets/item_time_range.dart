@@ -36,12 +36,13 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
         widget.touchChange?.call(_isScrollUp!);
         setState(() => _isScrollUp = null);
       },
-      child: CircleAvatar(
-        radius: 23,
+      child: FloatingActionButton(
+        onPressed: null,
         backgroundColor:
             (widget.isWordRemind ? ColorsDefine.grey() : ColorsDefine.blue())
                 .color,
-        child: Center(child: widget.text),
+        elevation: 0,
+        child: widget.text,
       ),
     );
   }

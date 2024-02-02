@@ -1,5 +1,7 @@
 import 'package:base_define/base_define.dart';
+import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ItemStepper extends StatelessWidget {
   final String index;
@@ -14,30 +16,36 @@ class ItemStepper extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 10,
-            child: Text(index,
-                style: const TextStyle().c(ColorsDefine.background())),
-          ),
           Container(
-            width: double.infinity,
-            height: 40,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 15),
-            margin: const EdgeInsets.only(left: 10, top: 5),
-            decoration: const BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  color: Colors.white,
-                  width: 1,
-                ),
+              width: 20,
+              height: 20,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.blue),
+              child: Text(index)),
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 40,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 15),
+                margin: const EdgeInsets.only(left: 10, top: 5),
+                child: title,
               ),
-            ),
-            child: title,
+              Positioned(left: 10, bottom: 0, child: _VerticalLine()),
+            ],
           ),
         ],
       ),
     );
+  }
+}
+
+class _VerticalLine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    context.watch<ThemeCubit>();
+    return Container(width: 1, height: 40, color: ColorsDefine.black().color);
   }
 }

@@ -36,6 +36,12 @@ dependencies:
       url: https://github.com/hunghv-dev/base_define.git
       ref: master
 
+  # Base ui package
+  base_ui:
+    git:
+      url: https://github.com/hunghv-dev/base_ui.git
+      ref: master
+
   auto_route: 7.8.0
   csv: ^5.0.1
   device_preview: ^1.1.0
@@ -52,6 +58,7 @@ dependencies:
   permission_handler: ^10.2.0
   rename: ^2.1.1
   shared_preferences: ^2.0.15
+  tuple: ^2.0.2
 
 flutter_icons:
   image_path: "assets/images/icon.png"

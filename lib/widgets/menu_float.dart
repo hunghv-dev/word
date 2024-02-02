@@ -121,12 +121,7 @@ class _MenuFloatState extends State<MenuFloat>
                           .read<WordRemindBloc>()
                           .add(WordRemindEvent.changeStartTime(isScrollUp)),
                       text: BlocBuilder<WordRemindBloc, WordRemindState>(
-                        builder: (context, state) {
-                          return Text(
-                            state.startTimeLabel,
-                            style: const TextStyle(color: Colors.black),
-                          );
-                        },
+                        builder: (context, state) => Text(state.startTimeLabel),
                       ),
                       isWordRemind: widget.isWordRemind,
                     ),
@@ -135,12 +130,7 @@ class _MenuFloatState extends State<MenuFloat>
                           .read<WordRemindBloc>()
                           .add(WordRemindEvent.changeEndTime(isScrollUp)),
                       text: BlocBuilder<WordRemindBloc, WordRemindState>(
-                        builder: (context, state) {
-                          return Text(
-                            state.endTimeLabel,
-                            style: const TextStyle(color: Colors.black),
-                          );
-                        },
+                        builder: (context, state) => Text(state.endTimeLabel),
                       ),
                       isWordRemind: widget.isWordRemind,
                     ),
