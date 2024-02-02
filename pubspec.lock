@@ -62,7 +62,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "0741482a892bd21feb29071571b03710fbcd4e3e"
+      resolved-ref: e1192a34ee5bc0f9fe0785506012114c66b7a7bb
       url: "https://github.com/hunghv-dev/base_define.git"
     source: git
     version: "0.0.1"

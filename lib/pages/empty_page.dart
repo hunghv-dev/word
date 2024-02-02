@@ -1,7 +1,6 @@
 import 'package:base_define/base_define.dart';
 import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word/resources/string_utils.dart';
 import 'package:word/widgets/item_stepper.dart';
 
@@ -104,7 +103,7 @@ class _EmptyPageState extends State<EmptyPage>
                 const Text(StringUtils.textTap),
                 FloatingActionButton(
                     backgroundColor: ColorsDefine.blue().color,
-                    onPressed: context.read<ThemeCubit>().toggleTheme,
+                    onPressed: null,
                     elevation: 0,
                     child: const Icon(Icons.add_alert_outlined)),
                 const Text(StringUtils.textUseCaseStep5),
