@@ -1,4 +1,5 @@
 import 'package:base_define/base_define.dart';
+import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
