@@ -43,7 +43,7 @@ class _MenuFloatState extends State<MenuFloat>
   @override
   void initState() {
     animationController =
-        AnimationController(vsync: this, duration: DurationDefine.ms100);
+        AnimationController(vsync: this, duration: DurationDefine.ms50);
     translateAnimation =
         Tween(begin: 0.0, end: 1.0).animate(animationController);
     iconAnimation =

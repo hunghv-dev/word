@@ -12,7 +12,7 @@ class ItemStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.zero.top5.vertical20,
+      padding: EdgeInsets.zero.top5.horizontal20,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
