@@ -62,7 +62,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "0100cca21ceeba75db9b8df7a3e8029f32d42d17"
+      resolved-ref: "0515e898d12428a297b6bffbd135ee405f1eff5a"
       url: "https://github.com/hunghv-dev/base_define.git"
     source: git
     version: "0.0.1"
@@ -71,7 +71,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "71a3a4f9f83b642512ab3f7167ad5fa835c509dc"
+      resolved-ref: b7cd1e219ad632a4073592a3004bd0e72990a262
       url: "https://github.com/hunghv-dev/base_ui.git"
     source: git
     version: "0.0.1"

@@ -88,13 +88,13 @@ class _HomePageState extends State<HomePage> {
                                 ? BoxDecoration(
                                     border: Border.all(
                                         width: 0.1,
-                                        color: ColorsDefine.grey().color),
+                                        color: ColorsDefine.grey().of(context)),
                                     borderRadius: BorderRadiusDefine.c10,
                                     gradient: LinearGradient(
                                         colors: [
-                                          ColorsDefine.black().color.withOpacity(0.05),
+                                          ColorsDefine.black().of(context).withOpacity(0.05),
                                           Colors.transparent,
-                                          ColorsDefine.black().color.withOpacity(0.1),
+                                          ColorsDefine.black().of(context).withOpacity(0.1),
                                         ],
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter),
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                   return FloatingActionButton(
                     onPressed: () =>
                         _bloc.add(const WordRemindEvent.pickCSVFile()),
-                    backgroundColor: ColorsDefine.blue().color,
+                    backgroundColor: ColorsDefine.blue().of(context),
                     child: const Icon(
                       Icons.add,
                     ),

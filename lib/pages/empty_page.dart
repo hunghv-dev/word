@@ -62,7 +62,7 @@ class _EmptyPageState extends State<EmptyPage>
                 Text(AppLocalizations.of(context).textTap),
                 Spacing.w5,
                 FloatingActionButton.extended(
-                    backgroundColor: ColorsDefine.blue().color,
+                    backgroundColor: ColorsDefine.blue().of(context),
                     onPressed: null,
                     elevation: 0,
                     label: Text(AppLocalizations.of(context).textTime1M),
@@ -81,12 +81,12 @@ class _EmptyPageState extends State<EmptyPage>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     FloatingActionButton(
-                        backgroundColor: ColorsDefine.blue().color,
+                        backgroundColor: ColorsDefine.blue().of(context),
                         onPressed: null,
                         elevation: 0,
                         child: Text(AppLocalizations.of(context).textTime0H)),
                     FloatingActionButton(
-                        backgroundColor: ColorsDefine.blue().color,
+                        backgroundColor: ColorsDefine.blue().of(context),
                         onPressed: null,
                         elevation: 0,
                         child: Text(AppLocalizations.of(context).textTime24H)),
@@ -102,7 +102,7 @@ class _EmptyPageState extends State<EmptyPage>
               children: [
                 Text(AppLocalizations.of(context).textTap),
                 FloatingActionButton(
-                    backgroundColor: ColorsDefine.blue().color,
+                    backgroundColor: ColorsDefine.blue().of(context),
                     onPressed: null,
                     elevation: 0,
                     child: const Icon(Icons.add_alert_outlined)),

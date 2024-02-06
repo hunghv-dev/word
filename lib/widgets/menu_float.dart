@@ -95,7 +95,7 @@ class _MenuFloatState extends State<MenuFloat>
               backgroundColor: (widget.isWordRemind
                       ? ColorsDefine.green()
                       : ColorsDefine.blue())
-                  .color,
+                  .of(context),
               onPressed: widget.firstTap,
               elevation: 0,
               child: widget.firstIcon,
@@ -138,7 +138,7 @@ class _MenuFloatState extends State<MenuFloat>
                     backgroundColor: (widget.isWordRemind
                             ? ColorsDefine.grey()
                             : ColorsDefine.blue())
-                        .color,
+                        .of(context),
                     onPressed: widget.isWordRemind ? null : widget.secondTap,
                     elevation: 0,
                     label: Text(widget.periodLabel),
@@ -156,7 +156,7 @@ class _MenuFloatState extends State<MenuFloat>
                 backgroundColor: (widget.isWordRemind
                         ? ColorsDefine.grey()
                         : ColorsDefine.red())
-                    .color,
+                    .of(context),
                 onPressed: widget.isWordRemind ? null : widget.thirdTap,
                 elevation: 0,
                 child: widget.thirdIcon),
@@ -165,7 +165,7 @@ class _MenuFloatState extends State<MenuFloat>
         FloatingActionButton(
           backgroundColor:
               (widget.isWordRemind ? ColorsDefine.green() : ColorsDefine.blue())
-                  .color,
+                  .of(context),
           onPressed: _toggleMenu,
           child: widget.isWordRemind
               ? widget.firstIcon

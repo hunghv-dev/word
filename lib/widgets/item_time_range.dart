@@ -40,7 +40,7 @@ class _ItemTimeRangeState extends State<ItemTimeRange> {
         onPressed: null,
         backgroundColor:
             (widget.isWordRemind ? ColorsDefine.grey() : ColorsDefine.blue())
-                .color,
+                .of(context),
         elevation: 0,
         child: widget.text,
       ),

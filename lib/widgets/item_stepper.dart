@@ -44,8 +44,6 @@ class ItemStepper extends StatelessWidget {
 
 class _VerticalLine extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    context.watch<ThemeCubit>();
-    return Container(width: 1, height: 40, color: ColorsDefine.black().color);
-  }
+  Widget build(BuildContext context) =>
+      Container(width: 1, height: 40, color: ColorsDefine.black().of(context));
 }
