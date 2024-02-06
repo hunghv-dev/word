@@ -71,7 +71,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "222c9c77bae9d2f0ce957e73436f95a538dce789"
+      resolved-ref: "9da8407e55147c43bb3d7a271b4e95da40405a0d"
       url: "https://github.com/hunghv-dev/base_ui.git"
     source: git
     version: "0.0.1"
