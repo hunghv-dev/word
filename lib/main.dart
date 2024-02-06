@@ -33,7 +33,7 @@ class App extends StatelessWidget {
     return BlocBuilder<ThemeCubit, Brightness>(
       builder: (_, brightness) => MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        theme: ThemeDefine.from(brightness),
+        theme: ThemeDefine(brightness).data,
         routerConfig: getIt<AppRouter>().config(),
       ),
     );
