@@ -30,12 +30,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeCubit.themeMode,
-      theme: ThemeDefine.themeData,
-      darkTheme: ThemeDefine.darkThemeData,
-      routerConfig: getIt<AppRouter>().config(),
+    return BlocBuilder<ThemeCubit, Brightness>(
+      builder: (_, brightness) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeDefine.from(brightness),
+          routerConfig: getIt<AppRouter>().config(),
+        );
+      },
     );
   }
 }
