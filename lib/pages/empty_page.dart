@@ -21,7 +21,7 @@ class _EmptyPageState extends State<EmptyPage>
   @override
   void initState() {
     _animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+        AnimationController(vsync: this, duration: DurationDefine.s1)
           ..forward()
           ..repeat(reverse: true);
     _rotationAnimation = Tween(begin: -0.02, end: 0.02).animate(CurvedAnimation(

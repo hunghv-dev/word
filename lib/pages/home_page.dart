@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:base_define/base_define.dart';
+import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
@@ -59,8 +60,7 @@ class _HomePageState extends State<HomePage> {
             }
             if (state.isWordReminding) {
               _scrollController.animateTo(state.wordRemindIndex! * 50,
-                  duration: const Duration(milliseconds: 1000),
-                  curve: Curves.linear);
+                  duration: DurationDefine.s1, curve: Curves.linear);
             }
           },
           child: Scaffold(
@@ -78,8 +78,9 @@ class _HomePageState extends State<HomePage> {
                     const ItemDirection(icon: Icons.arrow_drop_up),
                     SliverFixedExtentList(
                       delegate: SliverChildBuilderDelegate(
-                        (_, index) {
+                        (context, index) {
                           final isFocusWord = state.isFocusWord(index);
+                          context.watch<ThemeCubit>();
                           return Container(
                             height: 50,
                             padding: EdgeInsets.zero.vertical10.horizontal20,
@@ -88,12 +89,12 @@ class _HomePageState extends State<HomePage> {
                                     border: Border.all(
                                         width: 0.1,
                                         color: ColorsDefine.grey().color),
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadiusDefine.c10,
                                     gradient: LinearGradient(
                                         colors: [
-                                          Colors.white.withOpacity(0.05),
+                                          ColorsDefine.black().color.withOpacity(0.05),
                                           Colors.transparent,
-                                          Colors.white.withOpacity(0.1),
+                                          ColorsDefine.black().color.withOpacity(0.1),
                                         ],
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter),
