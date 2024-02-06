@@ -31,13 +31,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, Brightness>(
-      builder: (_, brightness) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeDefine.from(brightness),
-          routerConfig: getIt<AppRouter>().config(),
-        );
-      },
+      builder: (_, brightness) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeDefine.from(brightness),
+        routerConfig: getIt<AppRouter>().config(),
+      ),
     );
   }
 }
