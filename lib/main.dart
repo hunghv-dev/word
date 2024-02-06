@@ -4,7 +4,6 @@ import 'package:base_define/base_define.dart';
 import 'package:base_ui/base_ui.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,11 +18,10 @@ Future<void> main() async {
   runApp(DevicePreview(
     enabled: false,
     tools: const [...DevicePreview.defaultTools],
-    builder: (context) =>
-        BlocProvider(
-          create: (_) => ThemeCubit(getIt<SharedPreferences>()),
-          child: const App(),
-        ),
+    builder: (context) => BlocProvider(
+      create: (_) => ThemeCubit(getIt<SharedPreferences>()),
+      child: const App(),
+    ),
   ));
 }
 
@@ -32,10 +30,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeCubit.themeMode,
       theme: ThemeDefine.themeData,
       darkTheme: ThemeDefine.darkThemeData,
       routerConfig: getIt<AppRouter>().config(),
