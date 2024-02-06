@@ -12,7 +12,7 @@ class ItemStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5, left: 20.0, right: 20.0),
+      padding: EdgeInsets.zero.top5.vertical20,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,8 +29,8 @@ class ItemStepper extends StatelessWidget {
                 width: double.infinity,
                 height: 40,
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 15),
-                margin: const EdgeInsets.only(left: 10, top: 5),
+                padding: EdgeInsets.zero.left15,
+                margin: EdgeInsets.zero.left10.top5,
                 child: title,
               ),
               Positioned(left: 10, bottom: 0, child: _VerticalLine()),

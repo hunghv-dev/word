@@ -82,8 +82,7 @@ class _HomePageState extends State<HomePage> {
                           final isFocusWord = state.isFocusWord(index);
                           return Container(
                             height: 50,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10.0),
+                            padding: EdgeInsets.zero.vertical10.horizontal20,
                             decoration: isFocusWord
                                 ? BoxDecoration(
                                     border: Border.all(
