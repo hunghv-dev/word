@@ -6,7 +6,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'app_router.dart';
 import 'di.dart';
 import 'utils/local_push_notification_helper.dart';
@@ -35,6 +35,9 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeDefine(brightness).data,
         routerConfig: getIt<AppRouter>().config(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localeResolutionCallback: MaterialAppUtils.defaultLocale,
       ),
     );
   }

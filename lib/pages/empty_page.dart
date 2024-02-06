@@ -1,7 +1,7 @@
 import 'package:base_define/base_define.dart';
 import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:word/resources/string_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:word/widgets/item_stepper.dart';
 
 import '../utils/define.dart';
@@ -49,34 +49,34 @@ class _EmptyPageState extends State<EmptyPage>
           Text(Define.appTitle, style: const TextStyle().s30.w700),
           const Divider(),
           Spacing.h10,
-          const ItemStepper(
-              index: StringUtils.textStep1,
-              title: Text(StringUtils.textUseCaseStep1)),
-          const ItemStepper(
-              index: StringUtils.textStep2,
-              title: Text(StringUtils.textUseCaseStep2)),
           ItemStepper(
-            index: StringUtils.textStep3,
+              index: AppLocalizations.of(context).textStep1,
+              title: Text(AppLocalizations.of(context).textUseCaseStep1)),
+          ItemStepper(
+              index: AppLocalizations.of(context).textStep2,
+              title: Text(AppLocalizations.of(context).textUseCaseStep2)),
+          ItemStepper(
+            index: AppLocalizations.of(context).textStep3,
             title: Row(
               children: [
-                const Text(StringUtils.textTap),
+                Text(AppLocalizations.of(context).textTap),
                 Spacing.w5,
                 FloatingActionButton.extended(
                     backgroundColor: ColorsDefine.blue().color,
                     onPressed: null,
                     elevation: 0,
-                    label: const Text(StringUtils.textTime1M),
+                    label: Text(AppLocalizations.of(context).textTime1M),
                     icon: const Icon(Icons.timer_outlined)),
                 Spacing.w5,
-                const Text(StringUtils.textUseCaseStep3),
+                Text(AppLocalizations.of(context).textUseCaseStep3),
               ],
             ),
           ),
           ItemStepper(
-            index: StringUtils.textStep4,
+            index: AppLocalizations.of(context).textStep4,
             title: Row(
               children: [
-                const Text(StringUtils.textUseCaseStep4First),
+                Text(AppLocalizations.of(context).textUseCaseStep4First),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -84,29 +84,29 @@ class _EmptyPageState extends State<EmptyPage>
                         backgroundColor: ColorsDefine.blue().color,
                         onPressed: null,
                         elevation: 0,
-                        child: const Text(StringUtils.textTime0H)),
+                        child: Text(AppLocalizations.of(context).textTime0H)),
                     FloatingActionButton(
                         backgroundColor: ColorsDefine.blue().color,
                         onPressed: null,
                         elevation: 0,
-                        child: const Text(StringUtils.textTime24H)),
+                        child: Text(AppLocalizations.of(context).textTime24H)),
                   ],
                 ),
-                const Text(StringUtils.textUseCaseStep4Second),
+                Text(AppLocalizations.of(context).textUseCaseStep4Second),
               ],
             ),
           ),
           ItemStepper(
-            index: StringUtils.textStep5,
+            index: AppLocalizations.of(context).textStep5,
             title: Row(
               children: [
-                const Text(StringUtils.textTap),
+                Text(AppLocalizations.of(context).textTap),
                 FloatingActionButton(
                     backgroundColor: ColorsDefine.blue().color,
                     onPressed: null,
                     elevation: 0,
                     child: const Icon(Icons.add_alert_outlined)),
-                const Text(StringUtils.textUseCaseStep5),
+                Text(AppLocalizations.of(context).textUseCaseStep5),
               ],
             ),
           ),

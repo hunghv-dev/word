@@ -1,0 +1,18 @@
+{
+  "readPermissionRemind": "Please allow Files and media permission for pick files",
+  "textStep1": "1",
+  "textUseCaseStep1": "Create and export a CSV file (Column:Row = 2:N) from Google Sheets",
+  "textStep2": "2",
+  "textUseCaseStep2": "Import that created file to App",
+  "textStep3": "3",
+  "textTap": "Tap",
+  "textUseCaseStep3": "change timer duration",
+  "textStep4": "4",
+  "textUseCaseStep4First": "Touch up/down",
+  "textUseCaseStep4Second": "change timer period",
+  "textStep5": "5",
+  "textUseCaseStep5": "start/stop timer",
+  "textTime1M": "1m",
+  "textTime0H": "0h",
+  "textTime24H": "24h"
+}

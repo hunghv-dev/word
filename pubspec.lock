@@ -71,7 +71,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "32e31c06ca0c60e2f390755d691490624cbd6acd"
+      resolved-ref: "71a3a4f9f83b642512ab3f7167ad5fa835c509dc"
       url: "https://github.com/hunghv-dev/base_ui.git"
     source: git
     version: "0.0.1"
@@ -385,7 +385,7 @@ packages:
     source: hosted
     version: "6.0.0"
   flutter_localizations:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -504,7 +504,7 @@ packages:
     source: hosted
     version: "2.1.6"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"

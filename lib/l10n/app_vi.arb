@@ -1,0 +1,18 @@
+{
+  "readPermissionRemind": "Vui lòng cho phép quyền truy cập tệp phương tiện",
+  "textStep1": "1",
+  "textUseCaseStep1": "Tạo và xuất tệp CSV (Cột:Hàng = 2:N) từ Google trang tính",
+  "textStep2": "2",
+  "textUseCaseStep2": "Nhập tệp đã tạo đó vào ứng dụng",
+  "textStep3": "3",
+  "textTap": "Bấm",
+  "textUseCaseStep3": "đổi thời lượng hẹn giờ",
+  "textStep4": "4",
+  "textUseCaseStep4First": "Vuốt lên/xuống",
+  "textUseCaseStep4Second": "đổi thời gian",
+  "textStep5": "5",
+  "textUseCaseStep5": "bắt đầu/dừng",
+  "textTime1M": "1m",
+  "textTime0H": "0h",
+  "textTime24H": "24h"
+}

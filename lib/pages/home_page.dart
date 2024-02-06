@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
 import 'package:word/pages/empty_page.dart';
-import 'package:word/resources/string_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:word/widgets/item_direction.dart';
 
 import '../di.dart';
@@ -53,8 +53,9 @@ class _HomePageState extends State<HomePage> {
         child: BlocListener<WordRemindBloc, WordRemindState>(
           listener: (context, state) {
             if (!state.readFilePermission) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(StringUtils.readPermissionRemind)));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context).readPermissionRemind)));
             }
             if (state.isWordReminding) {
               _scrollController.animateTo(state.wordRemindIndex! * 50,
