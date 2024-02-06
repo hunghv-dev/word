@@ -42,16 +42,14 @@ class _MenuFloatState extends State<MenuFloat>
 
   @override
   void initState() {
-    animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
-    translateAnimation = Tween(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
+    animationController =
+        AnimationController(vsync: this, duration: DurationDefine.ms100);
+    translateAnimation =
+        Tween(begin: 0.0, end: 1.0).animate(animationController);
     iconAnimation =
         Tween<double>(begin: 0.0, end: 1.0).animate(animationController);
+    animationController.addListener(() => setState(() {}));
     super.initState();
-    animationController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
