@@ -29,14 +29,12 @@ class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeDefine.instance.of(context),
-      routerConfig: getIt<AppRouter>().config(),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      localeResolutionCallback: MaterialAppUtils.defaultLocale,
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeDefine.instance.of(context),
+        routerConfig: getIt<AppRouter>().config(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localeResolutionCallback: MaterialAppUtils.defaultLocale,
+      );
 }
