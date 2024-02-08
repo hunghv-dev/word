@@ -31,7 +31,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        theme: ThemeDefine.instance.of(context),
+        theme: ThemeDataDefine.instance.of(context),
         routerConfig: getIt<AppRouter>().config(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
