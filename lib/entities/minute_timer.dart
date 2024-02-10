@@ -11,7 +11,11 @@ enum MinuteTimer {
 
   const MinuteTimer(this.minute);
 
-  String get label {
+  MinuteTimer get increase =>
+      minute == 180 ? MinuteTimer.oneMinute : MinuteTimer.values[index + 1];
+
+  @override
+  String toString() {
     switch (minute) {
       case 5:
         return '5m';
@@ -29,7 +33,4 @@ enum MinuteTimer {
         return '1m';
     }
   }
-
-  MinuteTimer get increase =>
-      minute == 180 ? MinuteTimer.oneMinute : MinuteTimer.values[index + 1];
 }

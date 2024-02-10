@@ -92,9 +92,13 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadiusDefine.c10,
                                     gradient: LinearGradient(
                                         colors: [
-                                          ColorsDefine.black().of(context).withOpacity(0.05),
+                                          ColorsDefine.black()
+                                              .of(context)
+                                              .withOpacity(0.05),
                                           Colors.transparent,
-                                          ColorsDefine.black().of(context).withOpacity(0.1),
+                                          ColorsDefine.black()
+                                              .of(context)
+                                              .withOpacity(0.1),
                                         ],
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter),
@@ -151,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                   thirdIcon: const Icon(Icons.delete_forever_outlined),
                   thirdTap: () =>
                       _bloc.add(const WordRemindEvent.clearCSVFile()),
-                  periodLabel: state.minuteTimerPeriod.label,
+                  periodLabel: state.minuteTimerPeriod.toString(),
                   isWordRemind: state.isWordRemind,
                 );
               },
