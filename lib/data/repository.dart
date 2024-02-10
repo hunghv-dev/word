@@ -93,27 +93,22 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<void> showNotification(List word) async {
-    await _localPushNotificationHelper.showNotification(word);
-  }
+  Future<void> showNotification(List word) async =>
+      await _localPushNotificationHelper.showNotification(word);
 
   @override
-  Future<void> cancelNotifications() async {
-    await _localPushNotificationHelper.cancelAllNotification();
-  }
+  Future<void> cancelNotifications() async =>
+      await _localPushNotificationHelper.cancelAllNotification();
 
   @override
-  Future<bool> checkBackgroundPermission() async {
-    return await _flutterBackgroundHelper.initialize();
-  }
+  Future<bool> checkBackgroundPermission() async =>
+      await _flutterBackgroundHelper.initialize();
 
   @override
-  Future<bool> disableBackgroundExecution() async {
-    return await _flutterBackgroundHelper.disableBackgroundExecution();
-  }
+  Future<bool> disableBackgroundExecution() async =>
+      await _flutterBackgroundHelper.disableBackgroundExecution();
 
   @override
-  Future<bool> enableBackgroundExecution() async {
-    return await _flutterBackgroundHelper.enableBackgroundExecution();
-  }
+  Future<bool> enableBackgroundExecution() async =>
+      await _flutterBackgroundHelper.enableBackgroundExecution();
 }
