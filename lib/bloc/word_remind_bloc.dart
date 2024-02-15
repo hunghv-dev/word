@@ -20,25 +20,25 @@ part 'word_remind_state.dart';
 @injectable
 class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   WordRemindBloc(this.repository) : super(const WordRemindState()) {
-    on<_LoadCSVFile>(_onLoadCSVFileEvent);
-    on<_PickCSVFile>(_onPickCSVFileEvent);
-    on<_ClearCSVFile>(_onClearCSVFileEvent);
+    on<_LoadCSVFile>(_onLoadCSVFile);
+    on<_PickCSVFile>(_onPickCSVFile);
+    on<_ClearCSVFile>(_onClearCSVFile);
     on<_ToggleTimer>(_onToggleTimer);
-    on<_UpdateWordRemind>(_onUpdateWordRemindEvent);
-    on<_ChangeTimerPeriod>(_onChangeTimerPeriodEvent);
-    on<_ChangeStartTime>(_onChangeStartTimeEvent);
-    on<_ChangeEndTime>(_onChangeEndTimeEvent);
+    on<_UpdateWordRemind>(_onUpdateWordRemind);
+    on<_ChangeTimerPeriod>(_onChangeTimerPeriod);
+    on<_ChangeStartTime>(_onChangeStartTime);
+    on<_ChangeEndTime>(_onChangeEndTime);
   }
 
   final Repository repository;
   Timer? _timer;
 
-  void _onLoadCSVFileEvent(_, emit) async {
+  void _onLoadCSVFile(_, emit) async {
     final listData = await repository.loadingCsvData();
     emit(state.copyWith(wordList: listData, isLoading: false));
   }
 
-  void _onPickCSVFileEvent(_, emit) async {
+  void _onPickCSVFile(_, emit) async {
     emit(state.copyWith(isLoading: true));
     final wordList = await repository.pickCSVFile();
     if (wordList == null) {
@@ -49,7 +49,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     emit(state.copyWith(isLoading: false));
   }
 
-  void _onClearCSVFileEvent(_, emit) async {
+  void _onClearCSVFile(_, emit) async {
     _timer?.cancel();
     await Future.wait([
       repository.clearTemporaryFiles(),
@@ -90,7 +90,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     }
   }
 
-  void _onUpdateWordRemindEvent(event, emit) async {
+  void _onUpdateWordRemind(event, emit) async {
     final randomWord = state.wordList.randomItem;
     await Future.wait([
       repository.cancelNotifications(),
@@ -103,17 +103,17 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     });
   }
 
-  void _onChangeTimerPeriodEvent(_, emit) async {
+  void _onChangeTimerPeriod(_, emit) async {
     emit(state.copyWith(minuteTimerPeriod: state.minuteTimerPeriod.increase));
   }
 
-  void _onChangeStartTimeEvent(_ChangeStartTime event, emit) async {
+  void _onChangeStartTime(_ChangeStartTime event, emit) async {
     final newStartTime = state.startTime + (event.isIncrease ? 1 : -1);
     emit(state.copyWith(
         startTime: newStartTime.clamp(Define.startDay, state.endTime)));
   }
 
-  void _onChangeEndTimeEvent(_ChangeEndTime event, emit) async {
+  void _onChangeEndTime(_ChangeEndTime event, emit) async {
     final newEndTime = state.endTime + (event.isIncrease ? 1 : -1);
     emit(state.copyWith(
         endTime: newEndTime.clamp(state.startTime, Define.endDay)));
