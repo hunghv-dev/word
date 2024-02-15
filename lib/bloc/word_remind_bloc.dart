@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:base_define/base_define.dart';
+import 'package:base_ui/base_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -8,9 +9,12 @@ import 'package:injectable/injectable.dart';
 import '../data/repository.dart';
 import '../entities/minute_timer.dart';
 import '../utils/define.dart';
+import 'word_remind_message.dart';
 
 part 'word_remind_bloc.freezed.dart';
+
 part 'word_remind_event.dart';
+
 part 'word_remind_state.dart';
 
 @injectable
@@ -36,11 +40,11 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   void _onPickCSVFileEvent(_, emit) async {
     emit(state.copyWith(isLoading: true));
-    final result = await repository.pickCSVFile();
-    if (result == null) {
-      emit(state.copyWith(readFilePermission: false));
+    final wordList = await repository.pickCSVFile();
+    if (wordList == null) {
+      state.sendMessage(emit, WordRemindMessage.requiredReadPermission());
     } else {
-      emit(state.copyWith(wordList: result));
+      emit(state.copyWith(wordList: wordList));
     }
     emit(state.copyWith(isLoading: false));
   }
@@ -82,8 +86,12 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     await Future.wait([
       repository.cancelNotifications(),
       repository.showNotification(randomWord),
-    ]).whenComplete(() => emit(
-        state.copyWith(wordRemindIndex: state.wordList.indexOf(randomWord))));
+    ]).whenComplete(() {
+      final wordRemindIndex = state.wordList.indexOf(randomWord);
+      state.sendMessage(emit,
+          WordRemindMessage.scrollTo(wordRemindIndex * Define.wordItemHeight));
+      emit(state.copyWith(wordRemindIndex: wordRemindIndex));
+    });
   }
 
   void _onChangeTimerPeriodEvent(_, emit) async {

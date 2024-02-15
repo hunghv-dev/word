@@ -7,4 +7,5 @@ class Define {
   static const int startDay = 0;
   static const int endDay = 24;
   static const String tagSpfCsvFilePath = 'csv_path';
+  static const double wordItemHeight = 50;
 }

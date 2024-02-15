@@ -9,7 +9,9 @@ import 'package:word/pages/empty_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:word/widgets/item_direction.dart';
 
+import '../bloc/word_remind_message.dart';
 import '../di.dart';
+import '../utils/define.dart';
 import '../widgets/menu_float.dart';
 import 'loading_page.dart';
 
@@ -46,33 +48,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          MoveToBackground.moveTaskToBack();
-          return false;
-        },
-        child: BlocListener<WordRemindBloc, WordRemindState>(
-          listener: (context, state) {
-            if (!state.readFilePermission) {
+  Widget build(BuildContext context) => MessageListener<WordRemindBloc>(
+        message: {
+          WordRemindMessageType.requiredReadPermission: (_) =>
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content:
-                      Text(AppLocalizations.of(context).readPermissionRemind)));
-            }
-            if (state.isWordReminding) {
-              _scrollController.animateTo(state.wordRemindIndex! * 50,
-                  duration: DurationDefine.s1, curve: Curves.linear);
-            }
+                      Text(AppLocalizations.of(context).readPermissionRemind))),
+          WordRemindMessageType.scrollTo: (index) =>
+              _scrollController.animateTo(index,
+                  duration: DurationDefine.s1, curve: Curves.linear),
+        },
+        child: WillPopScope(
+          onWillPop: () async {
+            MoveToBackground.moveTaskToBack();
+            return false;
           },
           child: Scaffold(
             body: BlocBuilder<WordRemindBloc, WordRemindState>(
               builder: (context, state) {
                 final wordList = state.wordList;
-                if (state.isLoading) {
-                  return const LoadingPage();
-                }
-                if (wordList.isEmpty) {
-                  return const EmptyPage();
-                }
+                if (state.isLoading) return const LoadingPage();
+                if (wordList.isEmpty) return const EmptyPage();
                 return CustomScrollView(
                   slivers: [
                     const ItemDirection(icon: Icons.arrow_drop_up),
@@ -82,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                           final isFocusWord = state.isFocusWord(index);
                           context.watch<ThemeCubit>();
                           return Container(
-                            height: 50,
+                            height: Define.wordItemHeight,
                             padding: EdgeInsets.zero.vertical10.horizontal20,
                             decoration: isFocusWord
                                 ? BoxDecoration(
@@ -124,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                         },
                         childCount: wordList.length,
                       ),
-                      itemExtent: 50,
+                      itemExtent: Define.wordItemHeight,
                     ),
                     const ItemDirection(
                         icon: Icons.arrow_drop_down, isTop: false),
