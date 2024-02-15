@@ -8,7 +8,7 @@ class WordRemindEvent with _$WordRemindEvent {
 
   const factory WordRemindEvent.clearCSVFile() = _ClearCSVFile;
 
-  const factory WordRemindEvent.turnWordRemind() = _TurnWordRemind;
+  const factory WordRemindEvent.toggleTimer() = _ToggleTimer;
 
   const factory WordRemindEvent.updateWordRemind() = _UpdateWordRemind;
 

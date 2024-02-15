@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                 return MenuFloat(
                   firstIcon: const Icon(Icons.add_alert_outlined),
                   firstTap: () =>
-                      _bloc.add(const WordRemindEvent.turnWordRemind()),
+                      _bloc.add(const WordRemindEvent.toggleTimer()),
                   secondIcon: const Icon(Icons.timer_outlined),
                   secondTap: () =>
                       _bloc.add(const WordRemindEvent.changeTimerPeriod()),
