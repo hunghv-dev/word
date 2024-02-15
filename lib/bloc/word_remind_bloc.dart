@@ -55,7 +55,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       repository.clearTemporaryFiles(),
       repository.cancelNotifications(),
     ]);
-    emit(state.clearWordList());
+    emit(state.copyWith(isWordRemind: false,wordList: []));
   }
 
   Future<void> _onTurnWordRemindEvent(_, emit) async {
@@ -65,7 +65,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     if (state.isWordRemind) {
       final isDisable = await repository.disableBackgroundExecution();
       if (!isDisable) return;
-      emit(state.turnOff());
+      emit(state.copyWith(isWordRemind: false));
       return await repository.cancelNotifications();
     }
     final isEnable = await repository.enableBackgroundExecution();

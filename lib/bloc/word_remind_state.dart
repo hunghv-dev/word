@@ -21,10 +21,6 @@ class WordRemindState with _$WordRemindState, MessageState<WordRemindMessage> {
 
   String get endTimeLabel => '${endTime}h';
 
-  WordRemindState turnOff() => copyWith(isWordRemind: false, isLoading: false);
-
-  WordRemindState clearWordList() => turnOff().copyWith(wordList: []);
-
   @override
   MessageState<WordRemindMessage> copyMessage(WordRemindMessage? message) =>
       copyWith(message: message);
