@@ -55,7 +55,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       repository.clearTemporaryFiles(),
       repository.cancelNotifications(),
     ]);
-    emit(state.copyWith(isWordRemind: false,wordList: []));
+    emit(state.copyWith(isWordRemind: false, wordList: []));
   }
 
   Future<void> _onTurnWordRemindEvent(_, emit) async {
@@ -100,18 +100,20 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
 
   void _onChangeStartTimeEvent(_ChangeStartTime event, emit) async {
     final newStartTime = state.startTime + (event.isIncrease ? 1 : -1);
-    if (newStartTime < 0 || newStartTime >= state.endTime) return;
-    emit(state.copyWith(startTime: newStartTime));
+    emit(state.copyWith(
+        startTime: newStartTime.clamp(Define.startDay, state.endTime)));
   }
 
   void _onChangeEndTimeEvent(_ChangeEndTime event, emit) async {
     final newEndTime = state.endTime + (event.isIncrease ? 1 : -1);
-    if (newEndTime <= state.startTime || newEndTime > 24) return;
-    emit(state.copyWith(endTime: newEndTime));
+    emit(state.copyWith(
+        endTime: newEndTime.clamp(state.startTime, Define.endDay)));
   }
 
-  void dispose() {
+  @override
+  Future<void> close() {
     _timer?.cancel();
     repository.cancelNotifications();
+    return super.close();
   }
 }
