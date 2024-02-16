@@ -11,15 +11,13 @@ class ItemDirection extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          isTop ? const SizedBox.shrink() : const Divider(),
-          Icon(icon, size: 50),
-          isTop ? const Divider() : const SizedBox.shrink(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SliverToBoxAdapter(
+        child: Column(
+          children: [
+            isTop ? const SizedBox.shrink() : const Divider(),
+            Icon(icon, size: 50),
+            isTop ? const Divider() : const SizedBox.shrink(),
+          ],
+        ),
+      );
 }

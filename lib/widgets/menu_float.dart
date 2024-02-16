@@ -3,7 +3,8 @@ import 'package:base_ui/base_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word/bloc/word_remind_bloc.dart';
-import 'package:word/widgets/item_time_range.dart';
+
+import 'hour_button.dart';
 
 class MenuFloat extends StatefulWidget {
   final Icon firstIcon;
@@ -33,24 +34,22 @@ class MenuFloat extends StatefulWidget {
 
 class _MenuFloatState extends State<MenuFloat>
     with SingleTickerProviderStateMixin {
-  late final AnimationController animationController;
-  late final Animation<double> translateAnimation, iconAnimation;
-
-  double getRadiansFromDegree(double degree) {
-    double unitRadian = 57.295779513;
-    return degree / unitRadian;
-  }
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
 
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: DurationDefine.ms50);
-    translateAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(animationController);
-    iconAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(animationController);
-    animationController.addListener(() => setState(() {}));
     super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: DurationDefine.ms50)
+          ..addListener(() => setState(() {}));
+    _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,121 +60,108 @@ class _MenuFloatState extends State<MenuFloat>
     }
   }
 
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  void _toggleMenu() {
-    if (animationController.isCompleted) {
-      animationController.reverse();
-    } else {
-      animationController.forward();
-    }
-  }
+  void _toggleMenu() => _animationController.isCompleted
+      ? _animationController.reverse()
+      : _animationController.forward();
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: <Widget>[
-        IgnorePointer(
-          child: Container(
-            color: Colors.transparent,
-            height: 180.0,
-            width: 180.0,
-          ),
-        ),
-        Transform.translate(
-          offset: Offset.fromDirection(
-              getRadiansFromDegree(270), translateAnimation.value * 100),
-          child: Transform(
-            transform: Matrix4.identity()..scale(translateAnimation.value),
-            child: FloatingActionButton(
-              backgroundColor: (widget.isWordRemind
-                      ? ColorsDefine.green()
-                      : ColorsDefine.blue())
-                  .of(context),
-              onPressed: widget.firstTap,
-              elevation: 0,
-              child: widget.firstIcon,
+  Widget build(BuildContext context) => Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          IgnorePointer(
+            child: Container(
+              color: Colors.transparent,
+              height: 180.0,
+              width: 180.0,
             ),
           ),
-        ),
-        Transform.translate(
-          offset: Offset.fromDirection(
-              getRadiansFromDegree(225), translateAnimation.value * 100),
-          child: Transform(
-            transform: Matrix4.identity()..scale(translateAnimation.value),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ItemTimeRange(
-                      touchChange: (isScrollUp) => context
-                          .read<WordRemindBloc>()
-                          .add(WordRemindEvent.changeStartTime(isScrollUp)),
-                      text: BlocBuilder<WordRemindBloc, WordRemindState>(
-                        builder: (context, state) => Text(state.startTimeLabel),
-                      ),
-                      isWordRemind: widget.isWordRemind,
-                    ),
-                    ItemTimeRange(
-                      touchChange: (isScrollUp) => context
-                          .read<WordRemindBloc>()
-                          .add(WordRemindEvent.changeEndTime(isScrollUp)),
-                      text: BlocBuilder<WordRemindBloc, WordRemindState>(
-                        builder: (context, state) => Text(state.endTimeLabel),
-                      ),
-                      isWordRemind: widget.isWordRemind,
-                    ),
-                  ],
-                ),
-                FloatingActionButton.extended(
-                    backgroundColor: (widget.isWordRemind
-                            ? ColorsDefine.grey()
-                            : ColorsDefine.blue())
-                        .of(context),
-                    onPressed: widget.isWordRemind ? null : widget.secondTap,
-                    elevation: 0,
-                    label: Text(widget.periodLabel),
-                    icon: widget.secondIcon),
-              ],
-            ),
-          ),
-        ),
-        Transform.translate(
-          offset: Offset.fromDirection(
-              getRadiansFromDegree(180), translateAnimation.value * 100),
-          child: Transform(
-            transform: Matrix4.identity()..scale(translateAnimation.value),
-            child: FloatingActionButton(
+          Transform.translate(
+            offset: Offset.fromDirection(270.0.radian!, _animation.value * 100),
+            child: Transform(
+              transform: Matrix4.identity()..scale(_animation.value),
+              child: FloatingActionButton(
                 backgroundColor: (widget.isWordRemind
-                        ? ColorsDefine.grey()
-                        : ColorsDefine.red())
+                        ? ColorsDefine.green()
+                        : ColorsDefine.blue())
                     .of(context),
-                onPressed: widget.isWordRemind ? null : widget.thirdTap,
+                onPressed: widget.firstTap,
                 elevation: 0,
-                child: widget.thirdIcon),
+                child: widget.firstIcon,
+              ),
+            ),
           ),
-        ),
-        FloatingActionButton(
-          backgroundColor:
-              (widget.isWordRemind ? ColorsDefine.green() : ColorsDefine.blue())
-                  .of(context),
-          onPressed: _toggleMenu,
-          child: widget.isWordRemind
-              ? widget.firstIcon
-              : AnimatedIcon(
-                  icon: AnimatedIcons.menu_close,
-                  progress: iconAnimation,
-                ),
-        )
-      ],
-    );
-  }
+          Transform.translate(
+            offset: Offset.fromDirection(225.0.radian!, _animation.value * 100),
+            child: Transform(
+              transform: Matrix4.identity()..scale(_animation.value),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      HourButton(
+                        touchChange: (isScrollUp) => context
+                            .read<WordRemindBloc>()
+                            .add(WordRemindEvent.changeStartTime(isScrollUp)),
+                        text: BlocBuilder<WordRemindBloc, WordRemindState>(
+                          builder: (context, state) =>
+                              Text(state.startTimeLabel),
+                        ),
+                        isWordRemind: widget.isWordRemind,
+                      ),
+                      HourButton(
+                        touchChange: (isScrollUp) => context
+                            .read<WordRemindBloc>()
+                            .add(WordRemindEvent.changeEndTime(isScrollUp)),
+                        text: BlocBuilder<WordRemindBloc, WordRemindState>(
+                          builder: (context, state) => Text(state.endTimeLabel),
+                        ),
+                        isWordRemind: widget.isWordRemind,
+                      ),
+                    ],
+                  ),
+                  FloatingActionButton.extended(
+                      backgroundColor: (widget.isWordRemind
+                              ? ColorsDefine.grey()
+                              : ColorsDefine.blue())
+                          .of(context),
+                      onPressed: widget.isWordRemind ? null : widget.secondTap,
+                      elevation: 0,
+                      label: Text(widget.periodLabel),
+                      icon: widget.secondIcon),
+                ],
+              ),
+            ),
+          ),
+          Transform.translate(
+            offset: Offset.fromDirection(180.0.radian!, _animation.value * 100),
+            child: Transform(
+              transform: Matrix4.identity()..scale(_animation.value),
+              child: FloatingActionButton(
+                  backgroundColor: (widget.isWordRemind
+                          ? ColorsDefine.grey()
+                          : ColorsDefine.red())
+                      .of(context),
+                  onPressed: widget.isWordRemind ? null : widget.thirdTap,
+                  elevation: 0,
+                  child: widget.thirdIcon),
+            ),
+          ),
+          FloatingActionButton(
+            backgroundColor: (widget.isWordRemind
+                    ? ColorsDefine.green()
+                    : ColorsDefine.blue())
+                .of(context),
+            onPressed: _toggleMenu,
+            child: widget.isWordRemind
+                ? widget.firstIcon
+                : AnimatedIcon(
+                    icon: AnimatedIcons.menu_close,
+                    progress: _animation,
+                  ),
+          )
+        ],
+      );
 }

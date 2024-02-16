@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:word/widgets/item_stepper.dart';
 
 import '../utils/define.dart';
-import '../widgets/floating_button.dart';
+import '../widgets/floating_circle.dart';
 
 class EmptyPage extends StatefulWidget {
   const EmptyPage({super.key});

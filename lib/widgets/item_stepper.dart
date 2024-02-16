@@ -33,17 +33,18 @@ class ItemStepper extends StatelessWidget {
                 margin: EdgeInsets.zero.left10.top5,
                 child: title,
               ),
-              Positioned(left: 10, bottom: 0, child: _VerticalLine()),
+              Positioned(
+                left: 10,
+                bottom: 0,
+                child: Container(
+                    width: 1,
+                    height: 40,
+                    color: ColorsDefine.black().of(context)),
+              ),
             ],
           ),
         ],
       ),
     );
   }
-}
-
-class _VerticalLine extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) =>
-      Container(width: 1, height: 40, color: ColorsDefine.black().of(context));
 }
