@@ -8,7 +8,7 @@ import '../utils/define.dart';
 import '../widgets/floating_button.dart';
 
 class EmptyPage extends StatefulWidget {
-  const EmptyPage({Key? key}) : super(key: key);
+  const EmptyPage({super.key});
 
   @override
   State<EmptyPage> createState() => _EmptyPageState();

@@ -17,9 +17,7 @@ import 'loading_page.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget implements AutoRouteWrapper {
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -75,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           final isFocusWord = state.isFocusWord(index);
-                          context.watch<ThemeCubit>();
                           return Container(
                             height: Define.wordItemHeight,
                             padding: EdgeInsets.zero.vertical10.horizontal20,
@@ -129,31 +126,26 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             floatingActionButton: BlocBuilder<WordRemindBloc, WordRemindState>(
-              builder: (context, state) {
-                if (state.wordList.isEmpty) {
-                  return FloatingActionButton(
-                    onPressed: () =>
-                        _bloc.add(const WordRemindEvent.pickCSVFile()),
-                    backgroundColor: ColorsDefine.blue().of(context),
-                    child: const Icon(
-                      Icons.add,
+              builder: (context, state) => state.wordList.isEmpty
+                  ? FloatingActionButton(
+                      onPressed: () =>
+                          _bloc.add(const WordRemindEvent.pickCSVFile()),
+                      backgroundColor: ColorsDefine.blue().of(context),
+                      child: const Icon(Icons.add),
+                    )
+                  : MenuFloat(
+                      firstIcon: const Icon(Icons.add_alert_outlined),
+                      firstTap: () =>
+                          _bloc.add(const WordRemindEvent.toggleTimer()),
+                      secondIcon: const Icon(Icons.timer_outlined),
+                      secondTap: () =>
+                          _bloc.add(const WordRemindEvent.changeTimerPeriod()),
+                      thirdIcon: const Icon(Icons.delete_forever_outlined),
+                      thirdTap: () =>
+                          _bloc.add(const WordRemindEvent.clearCSVFile()),
+                      periodLabel: state.minuteTimerPeriod.toString(),
+                      isWordRemind: state.isWordRemind,
                     ),
-                  );
-                }
-                return MenuFloat(
-                  firstIcon: const Icon(Icons.add_alert_outlined),
-                  firstTap: () =>
-                      _bloc.add(const WordRemindEvent.toggleTimer()),
-                  secondIcon: const Icon(Icons.timer_outlined),
-                  secondTap: () =>
-                      _bloc.add(const WordRemindEvent.changeTimerPeriod()),
-                  thirdIcon: const Icon(Icons.delete_forever_outlined),
-                  thirdTap: () =>
-                      _bloc.add(const WordRemindEvent.clearCSVFile()),
-                  periodLabel: state.minuteTimerPeriod.toString(),
-                  isWordRemind: state.isWordRemind,
-                );
-              },
             ),
           ),
         ),
