@@ -6,10 +6,10 @@ enum WordRemindMessageType {
 }
 
 class WordRemindMessage extends Message<WordRemindMessageType> {
-  WordRemindMessage({required super.type, super.content});
+  const WordRemindMessage({required super.type, super.content});
 
-  factory WordRemindMessage.requiredReadPermission() =>
-      WordRemindMessage(type: WordRemindMessageType.requiredReadPermission);
+  factory WordRemindMessage.requiredReadPermission() => const WordRemindMessage(
+      type: WordRemindMessageType.requiredReadPermission);
 
   factory WordRemindMessage.scrollTo(double index) =>
       WordRemindMessage(type: WordRemindMessageType.scrollTo, content: index);
