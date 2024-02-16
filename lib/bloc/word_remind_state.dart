@@ -13,6 +13,7 @@ class WordRemindState with _$WordRemindState, MessageState<WordRemindMessage> {
     @Default(Define.endDay) int endTime,
     @Default(true) bool isLoading,
     @override WordRemindMessage? message,
+    @override bool? resetMessage,
   }) = _WordRemindState;
 
   bool isFocusWord(int index) => isWordRemind && wordRemindIndex == index;

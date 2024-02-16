@@ -19,7 +19,7 @@ part 'word_remind_state.dart';
 
 @injectable
 class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
-  WordRemindBloc(this.repository) : super(const WordRemindState()) {
+  WordRemindBloc(this._repository) : super(const WordRemindState()) {
     on<_LoadCSVFile>(_onLoadCSVFile);
     on<_PickCSVFile>(_onPickCSVFile);
     on<_ClearCSVFile>(_onClearCSVFile);
@@ -30,17 +30,17 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     on<_ChangeEndTime>(_onChangeEndTime);
   }
 
-  final Repository repository;
+  final Repository _repository;
   Timer? _timer;
 
   void _onLoadCSVFile(_, emit) async {
-    final listData = await repository.loadingCsvData();
+    final listData = await _repository.loadingCsvData();
     emit(state.copyWith(wordList: listData, isLoading: false));
   }
 
   void _onPickCSVFile(_, emit) async {
     emit(state.copyWith(isLoading: true));
-    final wordList = await repository.pickCSVFile();
+    final wordList = await _repository.pickCSVFile();
     if (wordList == null) {
       state.sendMessage(emit, WordRemindMessage.requiredReadPermission());
     } else {
@@ -52,14 +52,14 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   void _onClearCSVFile(_, emit) async {
     _timer?.cancel();
     await Future.wait([
-      repository.clearTemporaryFiles(),
-      repository.cancelNotifications(),
+      _repository.clearTemporaryFiles(),
+      _repository.cancelNotifications(),
     ]);
     emit(state.copyWith(isWordRemind: false, wordList: []));
   }
 
   Future<void> _turnOnTimer(emit) async {
-    final isEnable = await repository.enableBackgroundExecution();
+    final isEnable = await _repository.enableBackgroundExecution();
     if (!isEnable) return;
     emit(state.copyWith(isWordRemind: true));
     _timer = Timer.periodic(
@@ -73,14 +73,14 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   }
 
   Future<void> _turnOffTimer(emit) async {
-    final isDisable = await repository.disableBackgroundExecution();
+    final isDisable = await _repository.disableBackgroundExecution();
     if (!isDisable) return;
     emit(state.copyWith(isWordRemind: false));
-    await repository.cancelNotifications();
+    await _repository.cancelNotifications();
   }
 
   Future<void> _onToggleTimer(_, emit) async {
-    final hasPermission = await repository.checkBackgroundPermission();
+    final hasPermission = await _repository.checkBackgroundPermission();
     if (!hasPermission) return;
     _timer?.cancel();
     if (state.isWordRemind) {
@@ -93,8 +93,8 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   void _onUpdateWordRemind(event, emit) async {
     final randomWord = state.wordList.randomItem;
     await Future.wait([
-      repository.cancelNotifications(),
-      repository.showNotification(randomWord),
+      _repository.cancelNotifications(),
+      _repository.showNotification(randomWord),
     ]).whenComplete(() {
       final wordRemindIndex = state.wordList.indexOf(randomWord);
       state.sendMessage(emit,
@@ -122,7 +122,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
   @override
   Future<void> close() {
     _timer?.cancel();
-    repository.cancelNotifications();
+    _repository.cancelNotifications();
     return super.close();
   }
 }
