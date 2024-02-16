@@ -87,10 +87,10 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<void> clearTemporaryFiles() async {
-    await FilePicker.platform.clearTemporaryFiles();
-    await _preferences.remove(Define.tagSpfCsvFilePath);
-  }
+  Future<void> clearTemporaryFiles() async => await Future.wait([
+        FilePicker.platform.clearTemporaryFiles(),
+        _preferences.remove(Define.tagSpfCsvFilePath),
+      ]);
 
   @override
   Future<void> showNotification(List word) async =>

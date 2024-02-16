@@ -30,7 +30,6 @@ class HomePage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isTurnOnNotification = false;
   late ScrollController _scrollController;
   late final _bloc = context.read<WordRemindBloc>();
 

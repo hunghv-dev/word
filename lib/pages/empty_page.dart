@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:word/widgets/item_stepper.dart';
 
 import '../utils/define.dart';
+import '../widgets/floating_button.dart';
 
 class EmptyPage extends StatefulWidget {
   const EmptyPage({Key? key}) : super(key: key);
@@ -15,18 +16,15 @@ class EmptyPage extends StatefulWidget {
 
 class _EmptyPageState extends State<EmptyPage>
     with SingleTickerProviderStateMixin {
-  late final Animation<double> _rotationAnimation;
   late final AnimationController _animationController;
 
   @override
   void initState() {
+    super.initState();
     _animationController =
         AnimationController(vsync: this, duration: DurationDefine.s1)
           ..forward()
           ..repeat(reverse: true);
-    _rotationAnimation = Tween(begin: -0.02, end: 0.02).animate(CurvedAnimation(
-        parent: _animationController, curve: Curves.elasticInOut));
-    super.initState();
   }
 
   @override
@@ -36,82 +34,77 @@ class _EmptyPageState extends State<EmptyPage>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Spacing.h50,
-          RotationTransition(
-            turns: _rotationAnimation,
-            child: const Icon(Icons.access_alarm_outlined, size: 100),
-          ),
-          Spacing.h20,
-          Text(Define.appTitle, style: const TextStyle().s30.w700),
-          const Divider(),
-          Spacing.h10,
-          ItemStepper(
-              index: AppLocalizations.of(context).textStep1,
-              title: Text(AppLocalizations.of(context).textUseCaseStep1)),
-          ItemStepper(
-              index: AppLocalizations.of(context).textStep2,
-              title: Text(AppLocalizations.of(context).textUseCaseStep2)),
-          ItemStepper(
-            index: AppLocalizations.of(context).textStep3,
-            title: Row(
-              children: [
-                Text(AppLocalizations.of(context).textTap),
-                Spacing.w5,
-                FloatingActionButton.extended(
-                    backgroundColor: ColorsDefine.blue().of(context),
-                    onPressed: null,
-                    elevation: 0,
-                    label: Text(AppLocalizations.of(context).textTime1M),
-                    icon: const Icon(Icons.timer_outlined)),
-                Spacing.w5,
-                Text(AppLocalizations.of(context).textUseCaseStep3),
-              ],
+  Widget build(BuildContext context) => SingleChildScrollView(
+        child: Column(
+          children: [
+            Box.h50,
+            RotationTransition(
+              turns: Tween(
+                begin: Define.rotationStartTween,
+                end: Define.rotationEndTween,
+              ).animate(
+                CurvedAnimation(
+                    parent: _animationController, curve: Curves.elasticInOut),
+              ),
+              child: const Icon(Icons.access_alarm_outlined, size: 100),
             ),
-          ),
-          ItemStepper(
-            index: AppLocalizations.of(context).textStep4,
-            title: Row(
-              children: [
-                Text(AppLocalizations.of(context).textUseCaseStep4First),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FloatingActionButton(
-                        backgroundColor: ColorsDefine.blue().of(context),
-                        onPressed: null,
-                        elevation: 0,
-                        child: Text(AppLocalizations.of(context).textTime0H)),
-                    FloatingActionButton(
-                        backgroundColor: ColorsDefine.blue().of(context),
-                        onPressed: null,
-                        elevation: 0,
-                        child: Text(AppLocalizations.of(context).textTime24H)),
-                  ],
-                ),
-                Text(AppLocalizations.of(context).textUseCaseStep4Second),
-              ],
+            Box.h20,
+            Text(Define.appTitle, style: const TextStyle().s30.w700),
+            const Divider(),
+            Box.h10,
+            ItemStepper(
+                index: AppLocalizations.of(context).textStep1,
+                title: Text(AppLocalizations.of(context).textUseCaseStep1)),
+            ItemStepper(
+                index: AppLocalizations.of(context).textStep2,
+                title: Text(AppLocalizations.of(context).textUseCaseStep2)),
+            ItemStepper(
+              index: AppLocalizations.of(context).textStep3,
+              title: Row(
+                children: [
+                  Text(AppLocalizations.of(context).textTap),
+                  Box.w5,
+                  FloatingActionButton.extended(
+                      backgroundColor: ColorsDefine.blue().of(context),
+                      onPressed: null,
+                      elevation: 0,
+                      label: Text(AppLocalizations.of(context).textTime1M),
+                      icon: const Icon(Icons.timer_outlined)),
+                  Box.w5,
+                  Text(AppLocalizations.of(context).textUseCaseStep3),
+                ],
+              ),
             ),
-          ),
-          ItemStepper(
-            index: AppLocalizations.of(context).textStep5,
-            title: Row(
-              children: [
-                Text(AppLocalizations.of(context).textTap),
-                FloatingActionButton(
-                    backgroundColor: ColorsDefine.blue().of(context),
-                    onPressed: null,
-                    elevation: 0,
-                    child: const Icon(Icons.add_alert_outlined)),
-                Text(AppLocalizations.of(context).textUseCaseStep5),
-              ],
+            ItemStepper(
+              index: AppLocalizations.of(context).textStep4,
+              title: Row(
+                children: [
+                  Text(AppLocalizations.of(context).textUseCaseStep4First),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      FloatingCircle(
+                          child: Text(AppLocalizations.of(context).textTime0H)),
+                      FloatingCircle(
+                          child:
+                              Text(AppLocalizations.of(context).textTime24H)),
+                    ],
+                  ),
+                  Text(AppLocalizations.of(context).textUseCaseStep4Second),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+            ItemStepper(
+              index: AppLocalizations.of(context).textStep5,
+              title: Row(
+                children: [
+                  Text(AppLocalizations.of(context).textTap),
+                  const FloatingCircle(child: Icon(Icons.add_alert_outlined)),
+                  Text(AppLocalizations.of(context).textUseCaseStep5),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
 }

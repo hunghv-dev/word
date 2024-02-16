@@ -8,4 +8,6 @@ class Define {
   static const int endDay = 24;
   static const String tagSpfCsvFilePath = 'csv_path';
   static const double wordItemHeight = 50;
+  static const double rotationStartTween = -0.02;
+  static const double rotationEndTween = 0.02;
 }
