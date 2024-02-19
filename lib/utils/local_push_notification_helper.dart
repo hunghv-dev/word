@@ -5,11 +5,14 @@ import 'package:injectable/injectable.dart';
 
 import 'define.dart';
 
-@LazySingleton()
+@lazySingleton
 class LocalPushNotificationHelper {
   static const _androidDefaultIcon = 'app_icon';
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  static Future<void> init() async {
+  LocalPushNotificationHelper(this._flutterLocalNotificationsPlugin);
+
+  Future<void> init() async {
     /// Change icon at android\app\src\main\res\drawable\app_icon.png
     const androidInit = AndroidInitializationSettings(_androidDefaultIcon);
 
@@ -31,7 +34,7 @@ class LocalPushNotificationHelper {
     ///
     /// We use this channel in the `AndroidManifest.xml` file to override the
     /// default FCM channel to enable heads up notifications.
-    await FlutterLocalNotificationsPlugin()
+    await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(const AndroidNotificationChannel(
@@ -61,7 +64,7 @@ class LocalPushNotificationHelper {
       iOS: iOSPlatformChannelSpecifics,
     );
 
-    await FlutterLocalNotificationsPlugin()
+    await _flutterLocalNotificationsPlugin
         .show(
           Define.localNotificationsId,
           word[0],
@@ -72,7 +75,6 @@ class LocalPushNotificationHelper {
             log('Can not show notification cause $error'));
   }
 
-  Future<void> cancelAllNotification() async {
-    await FlutterLocalNotificationsPlugin().cancelAll();
-  }
+  Future<void> cancelAllNotification() async =>
+      await _flutterLocalNotificationsPlugin.cancelAll();
 }

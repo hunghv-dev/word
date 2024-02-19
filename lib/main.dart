@@ -14,7 +14,7 @@ import 'utils/local_push_notification_helper.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
-  await LocalPushNotificationHelper.init();
+  await getIt<LocalPushNotificationHelper>().init();
   runApp(DevicePreview(
     enabled: false,
     tools: const [...DevicePreview.defaultTools],
