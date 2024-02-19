@@ -42,7 +42,7 @@ class RepositoryImpl extends Repository {
     this._flutterBackgroundHelper,
   );
 
-  Future<List<List>> _loadingCsvData(String path) async {
+  Future<List<List>> _openCsvFile(String path) async {
     final file = File(path);
     final isFileExists = await file.exists();
     if (!isFileExists) {
@@ -63,7 +63,7 @@ class RepositoryImpl extends Repository {
     if (path == null) {
       return [];
     }
-    return await _loadingCsvData(path);
+    return await _openCsvFile(path);
   }
 
   @override
@@ -76,7 +76,7 @@ class RepositoryImpl extends Repository {
       final path = result?.files.first.path;
       if (path == null) return [];
       await _preferences.setString(Define.tagSpfCsvFilePath, path);
-      return await _loadingCsvData(path);
+      return await _openCsvFile(path);
     } on PlatformException {
       var status = await Permission.storage.status;
       if (!status.isGranted) {

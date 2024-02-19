@@ -18,10 +18,8 @@ Future<void> main() async {
   runApp(DevicePreview(
     enabled: false,
     tools: const [...DevicePreview.defaultTools],
-    builder: (context) => BlocProvider(
-      create: (_) => ThemeCubit(getIt<SharedPreferences>()),
-      child: const App(),
-    ),
+    builder: (context) =>
+        BlocProvider(create: (_) => getIt<ThemeCubit>(), child: const App()),
   ));
 }
 
