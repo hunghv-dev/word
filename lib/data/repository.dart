@@ -87,28 +87,28 @@ class RepositoryImpl extends Repository {
   }
 
   @override
-  Future<void> clearTemporaryFiles() async => await Future.wait([
+  Future<void> clearTemporaryFiles() => Future.wait([
         FilePicker.platform.clearTemporaryFiles(),
         _preferences.remove(Define.tagSpfCsvFilePath),
       ]);
 
   @override
-  Future<void> showNotification(List word) async =>
-      await _localPushNotificationHelper.showNotification(word);
+  Future<void> showNotification(List word) =>
+      _localPushNotificationHelper.showNotification(word);
 
   @override
-  Future<void> cancelNotifications() async =>
-      await _localPushNotificationHelper.cancelAllNotification();
+  Future<void> cancelNotifications() =>
+      _localPushNotificationHelper.cancelAllNotification();
 
   @override
-  Future<bool> checkBackgroundPermission() async =>
-      await _flutterBackgroundHelper.initialize();
+  Future<bool> checkBackgroundPermission() =>
+      _flutterBackgroundHelper.initialize();
 
   @override
-  Future<bool> disableBackgroundExecution() async =>
-      await _flutterBackgroundHelper.disableBackgroundExecution();
+  Future<bool> disableBackgroundExecution() =>
+      _flutterBackgroundHelper.disableBackgroundExecution();
 
   @override
-  Future<bool> enableBackgroundExecution() async =>
-      await _flutterBackgroundHelper.enableBackgroundExecution();
+  Future<bool> enableBackgroundExecution() =>
+      _flutterBackgroundHelper.enableBackgroundExecution();
 }
