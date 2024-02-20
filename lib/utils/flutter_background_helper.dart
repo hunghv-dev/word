@@ -5,7 +5,7 @@ import 'define.dart';
 
 @LazySingleton()
 class FlutterBackgroundHelper {
-  Future<bool> initialize() async => await FlutterBackground.initialize(
+  Future<bool> initialize() => FlutterBackground.initialize(
         androidConfig: const FlutterBackgroundAndroidConfig(
           notificationTitle: Define.appTitle,
           notificationText: Define.titleRunningApp,
@@ -14,9 +14,9 @@ class FlutterBackgroundHelper {
         ),
       );
 
-  Future<bool> enableBackgroundExecution() async =>
-      await FlutterBackground.enableBackgroundExecution();
+  Future<bool> enableBackgroundExecution() =>
+      FlutterBackground.enableBackgroundExecution();
 
-  Future<bool> disableBackgroundExecution() async =>
-      await FlutterBackground.disableBackgroundExecution();
+  Future<bool> disableBackgroundExecution() =>
+      FlutterBackground.disableBackgroundExecution();
 }

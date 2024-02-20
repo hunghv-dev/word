@@ -76,6 +76,6 @@ class LocalPushNotificationHelper {
             log('Can not show notification cause $error'));
   }
 
-  Future<void> cancelAllNotification() async =>
-      await _flutterLocalNotificationsPlugin.cancelAll();
+  Future<void> cancelAllNotification() =>
+      _flutterLocalNotificationsPlugin.cancelAll();
 }
