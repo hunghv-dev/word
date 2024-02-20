@@ -103,17 +103,17 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     });
   }
 
-  void _onChangeTimerPeriod(_, emit) async {
+  void _onChangeTimerPeriod(_, emit) {
     emit(state.copyWith(minuteTimerPeriod: state.minuteTimerPeriod.increase));
   }
 
-  void _onChangeStartTime(_ChangeStartTime event, emit) async {
+  void _onChangeStartTime(_ChangeStartTime event, emit) {
     final newStartTime = state.startTime + (event.isIncrease ? 1 : -1);
     emit(state.copyWith(
         startTime: newStartTime.clamp(Define.startDay, state.endTime)));
   }
 
-  void _onChangeEndTime(_ChangeEndTime event, emit) async {
+  void _onChangeEndTime(_ChangeEndTime event, emit) {
     final newEndTime = state.endTime + (event.isIncrease ? 1 : -1);
     emit(state.copyWith(
         endTime: newEndTime.clamp(state.startTime, Define.endDay)));

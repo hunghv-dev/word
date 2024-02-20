@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @module
 abstract class SharedPreferencesServices {
   @preResolve
-  Future<SharedPreferences> get pref => SharedPreferences.getInstance();
+  Future<SharedPreferences> get instance => SharedPreferences.getInstance();
 }
 
 @module
@@ -17,5 +17,5 @@ abstract class FlutterLocalNotificationsPluginServices {
 
 @module
 abstract class ThemeCubitServices {
-  ThemeCubit theme(SharedPreferences pref) => ThemeCubit(pref);
+  ThemeCubit instance(SharedPreferences pref) => ThemeCubit(pref);
 }
