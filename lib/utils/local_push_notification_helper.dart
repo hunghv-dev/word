@@ -12,6 +12,7 @@ class LocalPushNotificationHelper {
 
   LocalPushNotificationHelper(this._flutterLocalNotificationsPlugin);
 
+  @PostConstruct(preResolve: true)
   Future<void> init() async {
     /// Change icon at android\app\src\main\res\drawable\app_icon.png
     const androidInit = AndroidInitializationSettings(_androidDefaultIcon);
