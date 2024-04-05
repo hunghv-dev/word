@@ -34,13 +34,13 @@ dependencies:
   base_define:
     git:
       url: https://github.com/hunghv-dev/base_define.git
-      ref: master
+      ref: develop
 
   # Base ui package
   base_ui:
     git:
       url: https://github.com/hunghv-dev/base_ui.git
-      ref: master
+      ref: develop
 
   auto_route: 7.8.0
   csv: ^5.0.1
