@@ -31,6 +31,6 @@ class App extends StatelessWidget {
         routerConfig: getIt<AppRouter>().config(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        localeResolutionCallback: MaterialAppUtils.defaultLocale,
+        localeResolutionCallback: MaterialAppUtil.defaultLocale,
       );
 }

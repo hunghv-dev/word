@@ -12,9 +12,7 @@ import '../utils/define.dart';
 import 'word_remind_message.dart';
 
 part 'word_remind_bloc.freezed.dart';
-
 part 'word_remind_event.dart';
-
 part 'word_remind_state.dart';
 
 @injectable
@@ -42,7 +40,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
     emit(state.copyWith(isLoading: true));
     final wordList = await _repository.pickCSVFile();
     if (wordList == null) {
-      state.sendMessage(emit, WordRemindMessage.requiredReadPermission());
+      state.send(emit, WordRemindMessage.requiredReadPermission());
     } else {
       emit(state.copyWith(wordList: wordList));
     }
@@ -97,7 +95,7 @@ class WordRemindBloc extends Bloc<WordRemindEvent, WordRemindState> {
       _repository.showNotification(randomWord),
     ]).whenComplete(() {
       final wordRemindIndex = state.wordList.indexOf(randomWord);
-      state.sendMessage(emit,
+      state.send(emit,
           WordRemindMessage.scrollTo(wordRemindIndex * Define.wordItemHeight));
       emit(state.copyWith(wordRemindIndex: wordRemindIndex));
     });

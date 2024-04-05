@@ -23,6 +23,5 @@ class WordRemindState with _$WordRemindState, MessageState<WordRemindMessage> {
   String get endTimeLabel => '${endTime}h';
 
   @override
-  MessageState<WordRemindMessage> copyMessage(WordRemindMessage? message) =>
-      copyWith(message: message);
+  get copy => (_, message) => copyWith(message: message);
 }
